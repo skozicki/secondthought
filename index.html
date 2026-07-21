@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Second Thought</title>
+    <style>
+        /* ===== DESIGN TOKENS (GOLDEN RATIO & FIBONACCI SYSTEM) ===== */
+        :root {
+            /* Luxury Monochrome Design Palette */
+            --color-white-pure: #FFFFFF;
+            --color-white-muted: #E2E4E9;
+            --color-gray-light: #C4C7D0;
+            --color-gray-dark: #606470;
+            --color-bg-primary: #010102;
+            --color-bg-secondary: #11152c;
+            --color-border: rgba(255, 255, 255, 0.08);
+            --color-border-focus: rgba(255, 255, 255, 0.3);
+            --color-accent-primary: #9c9a88;
+            --color-accent-secondary: #848271;
+            --color-accent-tertiary: #424137;
+            
+            /* Premium Button States */
+            --color-btn-bg: #FFFFFF;
+            --color-btn-text: #0a0e27;
+            --color-btn-hover: #E2E4E9;
+
+            /* Typography Scale (Base 16px, Proportions derived from Phi 1.618) */
+            --font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, 'Neue Haas Grotesk Display Pro', sans-serif;
+            
+            --font-size-h1: 84px;          /* Premium Tight Display */
+            --font-size-h2: 34px;          /* Heading Scale Step */
+            --font-size-body-lg: 21px;     /* Sub-display layer */
+            --font-size-body-md: 16px;     /* Standard UI text */
+            --font-size-body-sm: 13px;     /* Micro/Functional text */
+
+            /* Line Heights (Golden Proportions: Tight for headers, open for reading) */
+            --line-height-display: 1.15;
+            --line-height-heading: 1.3;
+            --line-height-body: 1.618;
+
+            /* Letter Spacing (Zaktualizowany pod Plus Jakarta Sans) */
+            --letter-spacing-display: -0.01em; /* Subtelne zaciśnięcie dla wielkich nagłówków */
+            --letter-spacing-tight: 0em;        /* Brak minusów dla standardowych tytułów */
+            --letter-spacing-normal: 0.02em;    /* Delikatny oddech dla podstawowego UI i mniejszych fontów */
+            --letter-spacing-body: 0.035em;     /* Ekskluzywne rozstrzelenie dla akapitów <p> */
+            --letter-spacing-loose: 0.08em;     /* Dla guzików, menu i mikro-tekstów uppercase */
+
+            /* Spacing Matrix (Pure Fibonacci Sequence for visual harmony) */
+            --space-xs: 8px;
+            --space-sm: 13px;
+            --space-md: 21px;
+            --space-lg: 34px;
+            --space-xl: 55px;
+            --space-xxl: 89px;
+            --space-exxl: 200px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            font-family: var(--font-family);
+            background-color: var(--color-bg-primary);
+            color: var(--color-white-pure);
+            line-height: var(--line-height-body);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            scroll-behavior: auto;
+            scroll-padding-top: 160px;
+        }
+
+        /* GLOBLANY ODDECH DLA ZWYKŁYCH AKAPITÓW */
+        p {
+            letter-spacing: var(--letter-spacing-body);
+            font-size: var(--font-size-body-lg);
+        }
+
+        /* ===== VIDEO BACKGROUND & OVERLAY ===== */
+        video#bg-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(4, 6, 16, 0.6); /* Tinted transition overlay - darkened */
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        main {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: var(--space-xl) var(--space-md);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== HEADER / LANGUAGE TOGGLE ===== */
+        .header {
+            position: fixed;
+            top: var(--space-lg);
+            right: var(--space-lg);
+            z-index: 10;
+        }
+
+        .language-toggle-text {
+            font-size: var(--font-size-body-sm);
+            color: var(--color-gray-light);
+            letter-spacing: var(--letter-spacing-loose);
+            font-weight: 400;
+            cursor: pointer;
+            transition: color 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .language-toggle-text:hover {
+            color: var(--color-white-pure);
+        }
+
+        /* ===== WELCOME SECTION ===== */
+        #welcome-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+            text-align: center;
+            width: 100%;
+        }
+
+        .welcome-content {
+            width: 100%;
+            max-width: 100%;
+            margin-top: var(--space-xxl);
+        }
+
+        .welcome-content h1 {
+            font-size: var(--font-size-h1);
+            font-weight: 400;
+            margin-bottom: var(--space-lg);
+            letter-spacing: var(--letter-spacing-display);
+            color: var(--color-white-pure);
+            line-height: var(--line-height-display);
+        }
+
+        .welcome-intro-light {
+            font-size: var(--font-size-body-lg);
+            color: var(--color-white-muted);
+            margin-bottom: var(--space-exxl); /* Golden Ratio Distance */
+            line-height: 1.7; /* Większy odstęp pionowy linii */
+            font-weight: 300;
+            letter-spacing: var(--letter-spacing-body) !important; /* Zmiana z ujemnego/luźnego na optymalny plus */
+        }
+
+        .welcome-intro-light strong {
+            font-weight: 500;
+            color: var(--color-white-pure);
+        }
+
+        .welcome-instruction {
+            font-size: var(--font-size-body-sm);
+            color: var(--color-gray-light);
+            margin-bottom: var(--space-md);
+            letter-spacing: var(--letter-spacing-loose);
+            text-transform: uppercase;
+            font-weight: 400;
+        }
+
+        /* ===== FORM FIELDS (ALIGNMENT & SYMMETRY) ===== */
+        .code-section {
+            margin-bottom: var(--space-xl);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+        }
+
+        .code-input-container {
+            position: relative;
+            width: 100%;
+            max-width: 320px;
+            margin: 0 auto;
+        }
+
+        .code-input {
+            width: 100%;
+            height: 48px; 
+            padding: 0 var(--space-md);
+            font-size: var(--font-size-body-md);
+            background-color: rgba(255, 255, 255, 0.03);
+            color: var(--color-white-pure);
+            border: 1px solid var(--color-border);
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: var(--letter-spacing-loose);
+            text-align: center;
+            font-family: var(--font-family);
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .code-input::placeholder {
+            color: var(--color-gray-dark);
+        }
+
+        .code-input:focus {
+            outline: none;
+            border-color: var(--color-border-focus);
+            background-color: rgba(255, 255, 255, 0.06);
+        }
+
+        .code-button {
+            width: 100%;
+            max-width: 320px;
+            height: 48px; /* Synced scale with input */
+            margin: 0 auto;
+            background: linear-gradient(45deg, var(--color-accent-tertiary), var(--color-accent-secondary), var(--color-accent-primary));
+            color: var(--color-btn-text);
+            border: solid 1px #1f1f1f;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: var(--font-size-body-md);
+            letter-spacing: var(--letter-spacing-loose);
+            text-transform: none;
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            font-family: var(--font-family);
+        }
+
+        .code-button:hover:not(:disabled) {
+            background-color: var(--color-bg-secondary);
+            border-color: #c9c7ba;
+            transform: translateY(-1px);
+        }
+
+        .code-button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .code-validity {
+            font-size: var(--font-size-body-sm);
+            color: var(--color-gray-light);
+            letter-spacing: var(--letter-spacing-normal);
+        }
+
+        .error-message {
+            color: #f87171;
+            font-size: var(--font-size-body-sm);
+            margin-top: var(--space-xs);
+        }
+
+        .success-message {
+            color: #34d399;
+            font-size: var(--font-size-body-sm);
+            margin-top: var(--space-xs);
+        }
+
+        /* ===== ACCESS SECTION (EDITORIAL DESIGN) ===== */
+        #access-section {
+            display: none;
+            width: 100%;
+            max-width: 1080px;
+            margin-top: 160px;
+        }
+
+        .content-section {
+            margin-top: var(--space-exxl);
+            min-height: 50vh;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .content-section:last-child {
+            border-bottom: none;
+        }
+
+        .content-section h2 {
+            font-size: var(--font-size-h2);
+            margin-bottom: var(--space-md);
+            font-weight: 400;
+            letter-spacing: var(--letter-spacing-tight);
+            line-height: var(--line-height-heading);
+        }
+
+        .content-section p {
+            color: var(--color-white-muted);
+            margin-bottom: var(--space-sm);
+            font-weight: 300;
+            line-height: 1.65;
+            letter-spacing: var(--letter-spacing-body); /* Rozluźniony, głęboki oddech tekstu */
+        }
+
+        .content-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .content-section li {
+            margin-bottom: var(--space-xs);
+            padding-left: var(--space-md);
+            position: relative;
+            color: var(--color-white-muted);
+            font-weight: 300;
+            letter-spacing: var(--letter-spacing-body);
+        }
+
+        .content-section li:before {
+            content: "—";
+            position: absolute;
+            left: 0;
+            color: var(--color-gray-dark);
+            font-weight: 400;
+        }
+
+        .logout-button {
+            margin-top: var(--space-md);
+            padding: var(--space-sm) var(--space-lg);
+            background-color: transparent;
+            color: var(--color-white-pure);
+            border: 1px solid var(--color-border);
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: var(--font-size-body-sm);
+            font-weight: 400;
+            letter-spacing: var(--letter-spacing-loose);
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        .logout-button:hover {
+            border-color: var(--color-white-pure);
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .test-btn-style {
+            background-color: transparent;
+            border: 1px solid var(--color-border);
+            color: var(--color-white-pure);
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .token-info {
+            font-size: var(--font-size-body-sm);
+            color: var(--color-gray-dark);
+            margin-top: var(--space-xl);
+            padding-top: var(--space-lg);
+            border-top: 1px solid var(--color-border);
+        }
+
+        /* ===== CAPABILITIES SECTION (PREMIUM BENTO GRID 2x2) ===== */
+        .capabilities-container {
+            width: 100%;
+            margin-bottom: var(--space-xxl); /* Idealny oddech 89px */
+            margin-top: var(--space-xxl); 
+        }
+
+        .capabilities-container .split-feature-eyebrow {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: var(--color-accent-primary); /* Oliwkowy akcent spójny z resztą designu */
+            margin-bottom: var(--space-lg);
+            font-weight: 600;
+        }
+
+        .capabilities-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* Stabilny układ 2x2 na desktopie */
+            gap: var(--space-lg); /* Przestronny odstęp 34px między kafelkami */
+            width: 100%;
+        }
+
+        .cap-card {
+            background-color: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--space-xl); /* Maksymalny oddech wewnątrz kafelka - 55px */
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+            transition: background-color 0.4s ease, border-color 0.4s ease;
+        }
+
+        .cap-card:hover {
+            background-color: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .cap-num {
+            font-size: var(--font-size-body-sm);
+            color: var(--color-gray-dark);
+            font-weight: 500;
+            margin-bottom: var(--space-xl); /* Większy dystans pionowy cyfry */
+            letter-spacing: var(--letter-spacing-loose);
+        }
+
+        .cap-card h3 {
+            font-size: 26px; /* Powiększony pod nową przestrzeń 2x2 */
+            font-weight: 400;
+            color: var(--color-white-pure);
+            margin-bottom: var(--space-sm);
+            letter-spacing: var(--letter-spacing-tight);
+            line-height: var(--line-height-heading);
+        }
+
+        .cap-card p {
+            font-size: 15px;
+            color: var(--color-gray-light);
+            line-height: 1.65;
+            font-weight: 300;
+            letter-spacing: var(--letter-spacing-loose);
+            margin-bottom: 0 !important;
+        }
+
+        /* ===== METHODOLOGY FILTERS GRID (VERTICAL LAYOUT) ===== */
+        .methodology-grid {
+            display: grid;
+            grid-template-columns: 1fr; /* Single column for methodology - emphasizes process flow */
+            gap: var(--space-lg);
+            padding: var(--space-xxl) 0;
+        }
+
+        .methodology-grid .cap-card {
+            padding: var(--space-lg);
+            background-color: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .methodology-grid .cap-card:hover {
+            background-color: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        /* RWD - Dostosowanie bento grid i oddechów do mniejszych urządzeń */
+        @media (max-width: 820px) {
+            .capabilities-grid {
+                grid-template-columns: 1fr; /* 1 kolumna na tabletach i smartfonach */
+                gap: var(--space-md);
+            }
+            .cap-card {
+                padding: var(--space-lg); /* Bezpieczniejsze 34px na mobile */
+            }
+            .cap-num {
+                margin-bottom: var(--space-lg);
+            }
+            .methodology-grid {
+                gap: var(--space-md);
+                padding: var(--space-xl) 0;
+            }
+        }
+
+        /* ===== RESPONSIVE DISCIPLINE ===== */
+        @media (max-width: 900px) {
+            .welcome-content h1 {
+                font-size: var(--font-size-h1);
+            }
+            :root {
+                --font-size-h1: 48px;
+                --font-size-h2: 28px;
+                --font-size-body-lg: 18px;
+            }
+            #welcome-section {
+                min-height: 70vh;
+            }
+            .welcome-intro-light {
+                margin-bottom: var(--space-xl);
+                letter-spacing: var(--letter-spacing-loose);
+            }
+        }
+
+        /* RWD - Korekta oddechów między głównymi sekcjami dla mobile */
+@media (max-width: 820px) {
+    .content-section {
+        margin-top: var(--space-xxl); /* Zmniejsza margines z 200px na 89px */
+        min-height: auto; /* Usuwa sztuczne rozciąganie sekcji na wysokość ekranu */
+    }
+
+    #access-section {
+        margin-top: 100px; /* Nieznacznie zmniejsza górny odstęp pierwszej sekcji pod menu */
+    }
+}
+
+        /* ===== FLOATING PREMIUM NAVBAR ===== */
+        .premium-navbar {
+            position: fixed;
+            top: var(--space-lg);
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 850px;
+            height: var(--space-xl);
+            padding: 0 var(--space-lg);
+            
+            background-color: rgba(10, 14, 39, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px; /* Promień zmieniony na 8px */
+            
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .nav-logo {
+            color: var(--color-white-pure);
+            font-size: var(--font-size-body-md);
+            font-weight: 600;
+            letter-spacing: var(--letter-spacing-tight);
+        }
+
+        .burger-menu {
+            display: none; /* Domyślnie ukryte na desktopie */
+            color: var(--color-white-pure);
+            cursor: pointer;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: var(--space-lg);
+            align-items: center;
+        }
+
+        .nav-links a {
+            font-size: var(--font-size-body-sm);
+            color: var(--color-white-pure); /* Zawsze biały tekst */
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: var(--letter-spacing-loose);
+            font-weight: 400;
+            transition: font-weight 0.2s ease;
+            
+            /* Zapobieganie skakaniu layoutu przy pogrubieniu */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Pseudo-element rezerwujący przestrzeń dla tekstu Bold */
+        .nav-links a::after {
+            content: attr(title);
+            display: block;
+            font-weight: 700;
+            height: 0;
+            overflow: hidden;
+            visibility: hidden;
+        }
+
+        .nav-links a:hover {
+            font-weight: 700; /* Pogrubienie elementu na hover */
+            color: var(--color-accent-primary);
+        }
+
+        /* ===== RESET I STYLIZACJA JĘZYKA PO WRZUCENIU DO NAVBARU ===== */
+        .nav-links #lang-switcher {
+            position: static !important;
+            top: auto !important;
+            right: auto !important;
+            transform: none !important;
+            color: var(--color-white-pure) !important;
+            font-size: var(--font-size-body-sm) !important;
+            text-transform: uppercase;
+            letter-spacing: var(--letter-spacing-loose);
+            font-weight: 400;
+            cursor: pointer;
+            transition: font-weight 0.2s ease;
+            display: inline-block;
+        }
+
+        .nav-links #lang-switcher:hover {
+            font-weight: 700 !important; /* Pogrubienie języka na hover na desktopie */
+        }
+
+        /* ===== RESPONSIVE NAVBAR (MOBILE) ===== */
+        @media (max-width: 768px) {
+            .premium-navbar {
+                padding: 0 var(--space-md);
+            }
+            
+            .burger-menu {
+                display: block; /* Pokazujemy ikonę burgera */
+            }
+
+            .nav-links {
+                display: none; /* Ukryte do czasu kliknięcia burgera */
+                flex-direction: column;
+                position: absolute;
+                top: calc(100% + 8px); 
+                left: 0;
+                width: 100%;
+                background-color: rgba(10, 14, 39, 0.95);
+                backdrop-filter: blur(16px);
+                -webkit-backdrop-filter: blur(16px);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                border-radius: 8px;
+                padding: var(--space-md) 0;
+                gap: var(--space-md);
+                box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            }
+
+            /* Klasa aktywowana przez JavaScript */
+            .nav-links.active {
+                display: flex !important;
+            }
+
+            .nav-links a {
+                font-size: 14px;
+                width: 100%;
+                text-align: center;
+                padding: var(--space-xs) 0;
+            }
+
+            /* Pozycjonowanie i separacja języka na samym dole listy mobilnej */
+            .nav-links #lang-switcher {
+                display: flex !important;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+                padding-top: var(--space-md) !important;
+                margin-top: var(--space-xs) !important;
+                color: var(--color-gray-light) !important;
+            }
+
+            .nav-links #lang-switcher:hover {
+                color: var(--color-white-pure) !important;
+                font-weight: 700 !important;
+            }
+        }
+
+        /* ===== SPLIT FEATURE SECTION (STYLE Z IMAGE_795A51.PNG) ===== */
+        .split-feature-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-xxl); /* 89px odstępu między kolumnami */
+            padding: var(--space-xxl) 0;
+            align-items: start;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .split-feature-eyebrow {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: #848d76; /* Subtelny sage/oliwkowy odcień z makiety screena */
+            margin-bottom: var(--space-lg);
+            font-weight: 600;
+        }
+
+        .split-feature-left p {
+            font-size: var(--font-size-body-md); /* Większy, wyrazisty tekst po lewej */
+            line-height: 1.65;
+            color: var(--color-white-muted);
+            font-weight: 300;
+            letter-spacing: var(--letter-spacing-loose);
+        }
+
+        .split-feature-right .intro-text {
+            font-size: var(--font-size-body-lg);
+            line-height: 1.65;
+            color: var(--color-white-pure);
+            margin-bottom: var(--space-xl);
+            font-weight: 300;
+            letter-spacing: var(--letter-spacing-body);
+        }
+
+        .split-feature-list {
+            border-left: 1px solid rgba(255, 255, 255, 0.12); /* Charakterystyczna pionowa linia */
+            padding-left: var(--space-md); /* 21px wcięcia dla zawartości */
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xl); /* Odstępy między blokami listy */
+        }
+
+        .split-feature-item h3 {
+            font-size: 19px;
+            font-weight: 400;
+            color: var(--color-white-pure);
+            margin-bottom: var(--space-xs);
+            letter-spacing: var(--letter-spacing-tight);
+        }
+
+        .split-feature-item p {
+            font-size: 16px;
+            color: var(--color-gray-light);
+            line-height: 1.6;
+            font-weight: 300;
+            letter-spacing: var(--letter-spacing-loose);
+        }
+
+        /* RWD dla układu dwukolumnowego */
+        @media (max-width: 820px) {
+            .split-feature-section {
+                grid-template-columns: 1fr;
+                gap: var(--space-xl);
+                padding: var(--space-xl) 0;
+            }
+            
+            .split-feature-left {
+                margin-bottom: var(--space-md);
+            }
+            
+            .split-feature-list {
+                gap: var(--space-lg);
+            }
+        }
+        
+        /* ===== TABS COMPONENT ===== */
+        .tabs-container {
+            margin-top: var(--space-exxl);
+            margin-bottom: var(--space-xxl);
+            padding-bottom: var(--space-xxl);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .tabs-header {
+            display: flex;
+            gap: var(--space-lg);
+            margin-bottom: var(--space-xl);
+            padding-bottom: 0;
+        }
+
+        .tab-button {
+            background: none;
+            border: none;
+            color: #848d76;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 0;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            transition: color 0.2s ease;
+            position: relative;
+        }
+
+        .tab-button:hover {
+            color: var(--color-white-pure);
+        }
+
+        .tab-button.active {
+            color: var(--color-white-pure);
+            font-weight: 600;
+        }
+
+        .tab-button.active::after {
+            content: '';
+            position: absolute;
+            bottom: -13px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: var(--color-accent-primary);
+        }
+
+        .tab-panel {
+            display: none;
+        }
+
+        .tab-panel.active {
+            display: block;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .tab-panel p {
+            font-size: var(--font-size-body-lg);
+            line-height: var(--line-height-body);
+            margin-bottom: var(--space-md);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* RWD - Tabs na mobile */
+        @media (max-width: 820px) {
+            .tabs-header {
+                gap: var(--space-md);
+            }
+        }
+
+        /* ===== SECTION DIVIDERS ===== */
+        /* Dla kogo */
+        .capabilities-container {
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: var(--space-xxl);
+            margin-bottom: var(--space-xxl);
+        }
+
+        /* Wyróżniki */
+        #wyrozniki {
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        /* Metodologia & Jak to działa */
+        #jak-dziala {
+            border-bottom: none;
+        }
+
+        /* Szczegóły sesji */
+        .split-feature-section:not([id]) {
+            border-bottom: 1px solid var(--color-border);
+            padding-top: calc(var(--space-xxl) * 0.8); /* Zmniejszone o 20% */
+        }
+
+        /* Kontakt */
+        #kontakt {
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        /* Sesja info (O mnie) */
+        #sesja-info {
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        /* ===== COPYRIGHT FOOTER ===== */
+        .copyright-footer {
+            text-align: center;
+            font-size: var(--font-size-body-sm);
+            color: var(--color-gray-dark);
+            letter-spacing: var(--letter-spacing-loose);
+            margin-top: var(--space-xxl);
+            padding-bottom: var(--space-lg);
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@darkroom/lenis@latest"></script>
+</head>
+<body>
+    <!-- VIDEO BACKGROUND -->
+    <video id="bg-video" autoplay muted loop playsinline>
+        <source src="./0_Abstract_Dark_1920x1080.mp4" type="video/mp4">
+    </video>
+
+    <!-- HEADER (Miejsce startowe dla języka) -->
+    <header class="header">
+        <span class="language-toggle-text" id="lang-switcher">PL | EN</span>
+    </header>
+
+    <main>
+        <!-- WELCOME SECTION -->
+        <section id="welcome-section">
+            <div class="welcome-content">
+                <h1>Second Thought.</h1>
+                
+                <p class="welcome-intro-light">
+                    
+                    Czasami nie potrzebujesz porady. Potrzebujesz innego spojrzenia.<br>
+                    Jesteś tutaj, ponieważ moja usługa została doceniona i polecona Tobie jako wartościowe narzędzie.
+                </p>
+                 <p class="welcome-intro-light">
+                    
+                </p>
+
+                <p class="welcome-instruction">
+                    Uzyskaj dostęp, wpisując swój unikalny kod
+                </p>
+
+                <div class="code-section">
+                    <div class="code-input-container">
+                        <input 
+                            type="text" 
+                            id="code-input" 
+                            class="code-input" 
+                            placeholder="np. 5647DD23"
+                            maxlength="8"
+                            autocomplete="off"
+                        >
+                    </div>
+                    <button type="button" class="code-button" id="submit-btn">
+                        Wejdź
+                    </button>
+                    <div id="code-message"></div>
+                </div>
+
+                <p class="code-validity">
+                    Kod jest ważny 72h od jego pierwszego użycia.
+                </p>
+            </div>
+        </section>
+
+        <!-- ACCESS SECTION -->
+        <section id="access-section">
+            <!-- FLOATING PREMIUM NAVBAR -->
+            <nav class="premium-navbar">
+                <div class="nav-logo">SecondT</div>
+                
+                <!-- Ikona Burger Menu -->
+                <div class="burger-menu" id="burger-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </div>
+
+                <div class="nav-links" id="nav-links">
+                    <a href="#dla-kogo" title="Dla kogo">Dla kogo</a>
+                    <a href="#wyrozniki" title="Co wyróżnia ST">Co wyróżnia ST</a>
+                    <a href="#jak-dziala" title="Jak to działa">Jak to działa</a>
+                    <a href="#cena-rezerwacja" title="Sesja info">Sesja</a>
+                    <a href="#kontakt" title="Kontakt">Kontakt</a>
+                </div>
+            </nav>
+
+            <div class="content-section">
+                <h2>
+                    Second Thought to poufna sesja analityczna, której celem jest pomoc
+                    w przełamaniu mentalnego szumu, podważeniu założeń i spojrzeniu na swoją sytuację z większą jasnością.
+                </h2>
+               
+                <p>
+                    To drugi umysł — w momencie gdy Twój własny jest zbyt blisko, zbyt głośny 
+                    albo zbyt splątany żeby poruszać się jasno do przodu.
+                </p>
+            </div>
+
+            <!-- ===== DLA KOGO JEST TA USŁUGA (PREMIUM BENTO GRID 2x2) ===== -->
+            <div class="capabilities-container">
+                <div class="split-feature-eyebrow" id="dla-kogo">Moja metoda sprawdzi się dla</div>
+                
+                <div class="capabilities-grid">
+                    <!-- Card 01 -->
+                    <div class="cap-card">
+                        <span class="cap-num">01</span>
+                        <h3>Przedsiębiorca lub menedżer</h3>
+                        <p>chcesz poddać w wątpliwość utarte schematy, zachowania lub założenia</p>
+                    </div>
+
+                    <!-- Card 02 -->
+                    <div class="cap-card">
+                        <span class="cap-num">02</span>
+                        <h3>Twórca lub profesjonalista</h3>
+                        <p>potrzebujesz uporządkować złożone myśli lub potrzebujesz szerszej, przemyślanej opinii</p>
+                    </div>
+
+                    <!-- Card 03 -->
+                    <div class="cap-card">
+                        <span class="cap-num">03</span>
+                        <h3>Niezależny myśliciel</h3>
+                        <p>zmagasz się z nadmiernym analizowaniem lub paraliżem decyzyjnym</p>
+                    </div>
+
+                    <!-- Card 04 -->
+                    <div class="cap-card">
+                        <span class="cap-num">04</span>
+                        <h3>Osoby w obliczu niepewności i zmian</h3>
+                        <p>czujesz się zagubiony/a między różnymi opcjami lub decyzjami, potrzebujesz świeżego spojrzenia na sytuację</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== WYRÓŻNIKI ===== -->
+            <div class="content-section split-feature-section" id="wyrozniki">
+                <div class="split-feature-left">
+                    <div class="split-feature-eyebrow">Co wyróżnia Second Thought</div>
+                    <p>
+                        Większość ludzi nie potrzebuje kolejnych opinii. Potrzebują kogoś, kto potrafi zadawać właściwe pytania.
+            Second Thought oferuje spokojną, uporządkowaną, zewnętrzną perspektywę, wolną od emocjonalnych uprzedzeń, 
+            oczekiwań czy ukrytych motywów. 
+                    </p>
+                    <p>
+                        Poprzez bezpośrednią rozmowę i analityczne pytania rozkładamy sytuacje 
+            na czynniki pierwsze, aby dotrzeć do tego, co naprawdę ma znaczenie.
+                    </p>
+                    <p>Czasami rezultatem jest przełom. Czasami jest to zmiana perspektywy. Czasami jest to po prostu pierwszy głęboki oddech 
+                        po mentalnym chaosie. Tak czy inaczej, sesja wywołuje ruch.</p>
+                </div>
+                <div class="split-feature-right">
+                    <div class="split-feature-eyebrow">Co razem zrobimy</div>
+                    <p class="intro-text">
+                        Razem możemy zidentyfikować:
+                    </p>
+                    
+                    <div class="split-feature-list">
+                        <div class="split-feature-item">
+                            <h3>Blokady</h3>
+                            <p>co naprawdę blokuje Twój proces decyzyjny</p>
+                        </div>
+                        <div class="split-feature-item">
+                            <h3>Kierunek</h3>
+                            <p>gdzie Twoje myślenie może zataczać koło</p>
+                        </div>
+                        <div class="split-feature-item">
+                            <h3>Założenia</h3>
+                            <p>jakie założenia kształtują Twoje wybory</p>
+                        </div>
+                        <div class="split-feature-item">
+                            <h3>Niewidoczne</h3>
+                            <p>oraz jakie możliwości mogą być dla Ciebie jeszcze niewidoczne</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== FILTRY METODOLOGICZNE & JAK TO DZIAŁA ===== -->
+            <div class="content-section" id="jak-dziala">
+                <div class="split-feature-eyebrow">Filtry metodologiczne Second Thought</div>
+                
+                <p class="intro-text">
+                    Pytania, które usłyszysz podczas sesji, będą na bazie narzędzi analitycznych — nie poczujesz tego bo rozmowa jest bardzo naturalna. Przeprowadzimy Twoje wyzwanie przez takie filary jak:
+                </p>
+
+                <div class="methodology-grid">
+                    <!-- Metodologia 01 -->
+                    <div class="cap-card">
+                        <span class="cap-num">01</span>
+                        <h3>Głębokie źródło problemu</h3>
+                        <p><strong>5 Why / Ishikawa</strong></p>
+                        <p>Rozbijamy skomplikowane sytuacje biznesowe i osobiste za pomocą matrycy przyczynowo-skutkowej. Docieramy do pierwotnego ogniwa, którego zmiana automatycznie naprawia całą resztę procesu.</p>
+                    </div>
+
+                    <!-- Metodologia 02 -->
+                    <div class="cap-card">
+                        <span class="cap-num">02</span>
+                        <h3>Matryca odporności na błędy</h3>
+                        <p><strong>FMEA</strong></p>
+                        <p>Poddajemy Twoją decyzję lub nowe przedsięwzięcie testowi warunków skrajnych. Narzędzie FMEA pomaga oszacować ryzyko i zabezpieczyć Cię przed potknięciem tam, gdzie inni działają po omacku.</p>
+                    </div>
+
+                    <!-- Metodologia 03 -->
+                    <div class="cap-card">
+                        <span class="cap-num">03</span>
+                        <h3>Audyt Celowości</h3>
+                        <p><strong>Weryfikacja & Walidacja</strong></p>
+                        <p>Zanim zainwestujesz zasoby, upewniamy się, czy Twoje plany są wewnętrznie spójne i oparte na danych oraz czy ich realizacja rzeczywiście może rozwiązać problem czy wyzwanie, z którym się mierzysz.</p>
+                    </div>
+
+                    <!-- Metodologia 04 -->
+                    <div class="cap-card">
+                        <span class="cap-num">04</span>
+                        <h3>Odchudzanie codziennej rutyny</h3>
+                        <p><strong>Process Optimization</strong></p>
+                        <p>Analizujemy architekturę Twoich nawyków i procesów operacyjnych. Wyznaczamy do eliminacji z Twojego otoczenia i harmonogramu tarcia oraz przeszkody, uwalniając zasoby do kluczowych działań.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== SZCZEGÓŁY SESJI ===== -->
+            <div class="content-section split-feature-section">
+                <div class="split-feature-right">
+                    <div class="split-feature-eyebrow">Jak to działa</div>
+                    <p class="intro-text">
+                        Szczegóły sesji
+                    </p>
+                    
+                    <div class="split-feature-list">
+                        <div class="split-feature-item">
+                            <h3>Czas trwania</h3>
+                            <p>do 90 minut</p>
+                        </div>
+                        <div class="split-feature-item">
+                            <h3>Format</h3>
+                            <p>online lub osobiście (w zależności od lokalizacji)</p>
+                        </div>
+                        <div class="split-feature-item">
+                            <h3>Częstotliwość</h3>
+                            <p>sesja jednorazowa lub bieżące konsultacje w razie potrzeby</p>
+                        </div>
+                        <div class="split-feature-item">
+                            <h3>Limit</h3>
+                            <p>maksymalnie 3 sesje na temat, aby zachować przejrzystość i skuteczność</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="split-feature-left">
+                    <div class="split-feature-eyebrow">Więcej</div>
+                    <p>
+                        <strong>Partnerstwo</strong><br> 
+            Współpraca, a nie wykład.
+            Rozmawiamy jak równy z równym. Ty przedstawiasz swoją sytuację, 
+            a ja wnoszę dystans, obiektywizm i analityczną strukturę. 
+                    </p>
+
+                    <p>
+                        <strong>Szczerość i bezpośredniość</strong><br> 
+            Bezpośrednio, ale konstruktywnie. <br>
+            To szczera rozmowa. Nie powiem Ci tego, co chcesz usłyszeć — pomogę Ci zbadać, 
+            co faktycznie jest prawdą. 
+                    </p>
+
+                    <p>
+                        <strong>Poufność</strong><br> 
+            Całkowita poufność. Każda rozmowa pozostaje prywatna i dyskretna.
+                    </p>
+
+                    <p>
+                        <strong>Brak schematu</strong><br> 
+            Żadnych ogólnych schematów. <br>
+            Żadnych scenariuszy. Żadnych formuł. Żadnych motywacyjnych frazesów. 
+            Każda sesja jest w całości dostosowana do Ciebie i Twojej sytuacji.
+                    </p>
+
+                    <p>
+                        <strong>Efekty</strong><br> 
+            Może to być przełom w sposobie myślenia, nagłe rozjaśnienie sprawy albo… 
+            uświadomienie sobie, że musisz szukać dalej. Nie gwarantuję "magicznego rozwiązania".
+                    </p>
+                </div>
+            </div>
+
+            <div class="tabs-container" id="cena-rezerwacja">
+                <div class="tabs-header">
+                    <button class="tab-button active" data-tab="tab-price">Cena</button>
+                    <button class="tab-button" data-tab="tab-booking">Zarezerwuj sesję</button>
+                </div>
+
+                <div class="tabs-content">
+                    <!-- TAB: Cena -->
+                    <div id="tab-price" class="tab-panel active">
+                        <div class="split-feature-eyebrow">cena</div>
+                        <p><strong>Sesja: 400 PLN</strong></p>
+                        <p>
+                            100 PLN* przez Blik (na wskazany numer poniżej) przy rezerwacji (depozyt gwarantujący miejsce).<br>
+                            Jeśli nie dojedziesz, nie pojawisz się, depozyt zostaje utracony.
+                        </p>
+                        <p>
+                            300 PLN* przez Blik (na wskazany numer poniżej) w ciągu 48 godzin po zakończeniu sesji.
+                        </p>
+                        <p style="font-size: small; letter-spacing: var(--letter-spacing-loose)">
+                            *Rezerwując sesję zgadzasz się na powyższe warunki.
+                        </p>
+                    </div>
+
+                    <!-- TAB: Zarezerwuj sesję -->
+                    <div id="tab-booking" class="tab-panel">
+                        <div class="split-feature-eyebrow">Zarezerwuj sesję</div>
+                        <p>Kliknij poniżej aby wybrać dostępny termin:</p>
+                        <p>
+                            <em>[Tutaj będzie Calendly embed - dodamy podczas integracji]</em>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== KONTAKT ===== -->
+
+             <div class="content-section" id="kontakt">
+                <div class="split-feature-eyebrow">Kontakt</div>
+                <p>
+                    <strong>WhatsApp/Blik:</strong> +48 000 000 000<br>
+                    <strong>Email:</strong> secondthought.msa@gmail.com
+                </p>
+            </div>
+
+           <!-- ===== SESJA INFO (O MNIE) ===== -->
+
+            <div class="content-section">
+                <div class="split-feature-eyebrow">Meet Your Guide Behind "Second Thought"</div>
+                <p>
+                    <strong>Magdalena Stodulska</strong>
+                </p>
+                <p style="font-size: medium; letter-spacing: var(--letter-spacing-loose)">
+                    Z wykształcenia jestem magistrem inżynierem, dodatkowo ukończyłam studia z zakresu zarządzania projektami i zarządzania jakością.
+                    W ciągu ponad 15 lat pracy zawodowej, obejmujących obszary produkcji, IT oraz projektów naukowo-inżynierskich, stosowałam metodyki takie jak analiza 
+                    przyczyn źródłowych, 
+                    FMEA czy optymalizacja procesów — w celu diagnozowania i rozwiązywania problemów oraz wdrażania usprawnień.
+                </p>
+                <p style="font-size: medium; letter-spacing: var(--letter-spacing-loose)">Po drodze odkryłam coś nieoczekiwanego: to samo uporządkowane myślenie, które stabilizuje złożone przedsięwzięcia przemysłowe, może być przydatne w codziennych decyzjach, 
+wyzwaniach biznesowych czy osobistych. Zastosowane nawet tylko jako ramowe podejścia do problemów, trudności i wyborów, daje nam bardzo strukturalny, analityczny 
+i logiczny sposób radzenia sobie z codziennymi aspektami obecnymi w sferze zarządczo-organizacyjnej — zarówno w życiu zawodowym, jak i prywatnym.
+                </p>
+                <p style="font-size: medium; letter-spacing: var(--letter-spacing-loose)">To właśnie ta obserwacja stała się fundamentem Second Thought 
+                    — usługi zbudowanej na jednej prostej prawdzie: wszyscy jesteśmy systemami w ruchu. 
+                    Kiedy nasza ścieżka staje się powtarzalną pętlą, czasem wystarczy po prostu świeże spojrzenie, by ruszyć znowu naprzód.</p>
+            </div>
+
+            <div class="copyright-footer">
+                Copyright© Magdalena Stodulska SECOND THOUGHT 2026. All right reserved.
+            </div>
+
+           
+        </section>
+    </main>
+
+    <script>
+        // ===== LENIS SMOOTH SCROLL =====
+        window.addEventListener('load', () => {
+            if (typeof Lenis !== 'undefined') {
+                const lenis = new Lenis({
+                    lerp: 0.1,
+                    wheelMultiplier: 1,
+                    touchMultiplier: 2,
+                })
+
+                function raf(time) {
+                    lenis.raf(time)
+                    requestAnimationFrame(raf)
+                }
+
+                requestAnimationFrame(raf)
+            }
+        })
+
+        // ===== CONFIGURATION =====
+        const SPREADSHEET_ID = '1SXHXcvsVMnDLk6k94s9S0RSNTYMx8o_5TTjgFtm71nY';
+        const SERVICE_ACCOUNT_EMAIL = 'second-thought@secondthought-501318.iam.gserviceaccount.com';
+
+        // ===== VIDEO AUTOPLAY FORCE =====
+        function initializeVideo() {
+            const video = document.getElementById('bg-video');
+            if (video) {
+                const playPromise = video.play();
+                if (playPromise !== undefined) {
+                    playPromise
+                        .then(() => {
+                            console.log('✓ Video autoplay successful');
+                        })
+                        .catch(error => {
+                            console.log('⚠ Autoplay restricted by browser policy, video loaded');
+                        });
+                }
+            }
+        }
+
+        // ===== FUNCTIONS =====
+        function isTokenValid() {
+            const token = localStorage.getItem('access_token');
+            const expiresAt = localStorage.getItem('token_expires_at');
+            
+            if (!token || !expiresAt) {
+                return false;
+            }
+
+            const now = new Date().getTime();
+            if (now > parseInt(expiresAt)) {
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('token_expires_at');
+                return false;
+            }
+
+            return true;
+        }
+
+        function showAccessSection() {
+            document.getElementById('welcome-section').style.display = 'none';
+            document.getElementById('access-section').style.display = 'block';
+
+            // TELEPORTACJA JĘZYKA: Przeniesienie elementu PL|EN do paska nawigacji
+            const langSwitcher = document.getElementById('lang-switcher');
+            const navLinks = document.getElementById('nav-links');
+            if (langSwitcher && navLinks) {
+                navLinks.appendChild(langSwitcher);
+            }
+        }
+
+        function showWelcomeSection() {
+            document.getElementById('welcome-section').style.display = 'flex';
+            document.getElementById('access-section').style.display = 'none';
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('token_expires_at');
+
+            // ODWRÓCENIE TELEPORTACJI: Język wraca do standardowego nagłówka .header
+            const langSwitcher = document.getElementById('lang-switcher');
+            const originalHeader = document.querySelector('.header');
+            if (langSwitcher && originalHeader) {
+                originalHeader.appendChild(langSwitcher);
+            }
+        }
+
+        async function validateCode(code) {
+            const messageEl = document.getElementById('code-message');
+            const submitBtn = document.getElementById('submit-btn');
+            const inputEl = document.getElementById('code-input');
+
+            messageEl.innerHTML = '';
+            submitBtn.disabled = true;
+            inputEl.disabled = true;
+
+            try {
+                const response = await fetch('/.netlify/functions/validate-code', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ code: code.toUpperCase() })
+                });
+
+                const data = await response.json();
+
+                if (data.valid) {
+                    messageEl.innerHTML = '<span class="success-message">✓ Kod poprawny! Ładuję treść...</span>';
+                    
+                    localStorage.setItem('access_token', data.token);
+                    localStorage.setItem('token_expires_at', data.expiresAt);
+
+                    setTimeout(() => {
+                        showAccessSection();
+                    }, 1500);
+                } else {
+                    messageEl.innerHTML = `<span class="error-message">✗ ${data.message || 'Błąd podczas sprawdzania kodu.'}</span>`;
+                    submitBtn.disabled = false;
+                    inputEl.disabled = false;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                messageEl.innerHTML = '<span class="error-message">✗ Błąd serwera. Spróbuj ponownie.</span>';
+                submitBtn.disabled = false;
+                inputEl.disabled = false;
+            }
+        }
+
+        // ===== EVENT LISTENERS =====
+        document.getElementById('submit-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            const code = document.getElementById('code-input').value.trim();
+            
+            if (!code) {
+                document.getElementById('code-message').innerHTML = '<span class="error-message">Wpisz proszę kod dostępu.</span>';
+                return;
+            }
+
+            if (code.length !== 8) {
+                document.getElementById('code-message').innerHTML = '<span class="error-message">Kod musi mieć 8 znaków.</span>';
+                return;
+            }
+
+            validateCode(code);
+        });
+
+        // POPRAWKA: Zabezpieczenie przed błędem, gdy przycisk wylogowania nie istnieje w DOM
+        const logoutBtn = document.getElementById('logout-btn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', () => {
+                showWelcomeSection();
+                document.getElementById('code-input').value = '';
+            });
+        }
+
+        window.addEventListener('load', () => {
+            initializeVideo();
+            
+            if (isTokenValid()) {
+                showAccessSection();
+            } else {
+                showWelcomeSection();
+            }
+        });
+
+        // ===== TABS FUNCTIONALITY =====
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabId = button.getAttribute('data-tab');
+                    
+                    // Remove active class from all buttons and panels
+                    document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                    document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
+                    
+                    // Add active class to clicked button and corresponding panel
+                    button.classList.add('active');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+        });
+
+        // ===== BURGER MENU & NAVIGATION =====
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeVideo();
+
+            const burgerBtn = document.getElementById('burger-btn');
+            const navLinks = document.getElementById('nav-links');
+
+            if (burgerBtn && navLinks) {
+                // Otwieranie / zamykanie menu po kliknięciu na burger
+                burgerBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    navLinks.classList.toggle('active');
+                });
+
+                // Zamykanie menu po kliknięciu w dowolny element wewnątrz (linki oraz język)
+                navLinks.addEventListener('click', (e) => {
+                    if (e.target.tagName === 'A' || e.target.id === 'lang-switcher') {
+                        navLinks.classList.remove('active');
+                    }
+                });
+                
+                // Zamykanie kliknięciem w przestrzeń poza nawigacją
+                document.addEventListener('click', () => {
+                    navLinks.classList.remove('active');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

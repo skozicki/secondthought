@@ -1,0 +1,13 @@
+{
+  "name": "secondthought-landing",
+  "version": "1.0.0",
+  "description": "Landing page for Second Thought service",
+  "main": "index.html",
+  "scripts": {
+    "build": "echo 'Build complete'"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "author": "Sebastian Kozicki",
+  "license": "MIT"
+}
