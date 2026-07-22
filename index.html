@@ -16,9 +16,9 @@
             --color-bg-secondary: #11152c;
             --color-border: rgba(255, 255, 255, 0.08);
             --color-border-focus: rgba(255, 255, 255, 0.3);
-            --color-accent-primary: #9c9a88;
-            --color-accent-secondary: #848271;
-            --color-accent-tertiary: #424137;
+            --color-accent-primary: #FCDCC3;
+            --color-accent-secondary: #C3A185;
+            --color-accent-tertiary: #AF9074;
             
             /* Premium Button States */
             --color-btn-bg: #FFFFFF;
@@ -29,7 +29,9 @@
             --font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, 'Neue Haas Grotesk Display Pro', sans-serif;
             
             --font-size-h1: 84px;          /* Premium Tight Display */
-            --font-size-h2: 34px;          /* Heading Scale Step */
+            --font-size-h2: 36px;          /* Heading Scale Step */
+            --font-size-h3: 26px;
+            --font-size-h4: 21px;
             --font-size-body-lg: 21px;     /* Sub-display layer */
             --font-size-body-md: 16px;     /* Standard UI text */
             --font-size-body-sm: 13px;     /* Micro/Functional text */
@@ -64,7 +66,6 @@
 
         html, body {
             font-family: var(--font-family);
-            background-color: var(--color-bg-primary);
             color: var(--color-white-pure);
             line-height: var(--line-height-body);
             overflow-x: hidden;
@@ -79,27 +80,10 @@
             font-size: var(--font-size-body-lg);
         }
 
-        /* ===== VIDEO BACKGROUND & OVERLAY ===== */
-        video#bg-video {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: 0;
-        }
-
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(4, 6, 16, 0.6); /* Tinted transition overlay - darkened */
-            z-index: 0;
-            pointer-events: none;
+        /* ===== GRADIENT BACKGROUND ===== */
+        body {
+            background: radial-gradient(ellipse at 50% 30%, #1a2f5a 0%, #0f1a35 40%, #050811 100%);
+            background-attachment: fixed;
         }
 
         main {
@@ -168,7 +152,7 @@
             margin-bottom: var(--space-exxl); /* Golden Ratio Distance */
             line-height: 1.7; /* Większy odstęp pionowy linii */
             font-weight: 300;
-            letter-spacing: var(--letter-spacing-body) !important; /* Zmiana z ujemnego/luźnego na optymalny plus */
+            letter-spacing: var(--letter-spacing-loose) !important; /* Zmiana z ujemnego/luźnego na optymalny plus */
         }
 
         .welcome-intro-light strong {
@@ -177,12 +161,11 @@
         }
 
         .welcome-instruction {
-            font-size: var(--font-size-body-sm);
+            font-size: var(--font-size-body-md);
             color: var(--color-gray-light);
             margin-bottom: var(--space-md);
             letter-spacing: var(--letter-spacing-loose);
-            text-transform: uppercase;
-            font-weight: 400;
+            font-weight: 300;
         }
 
         /* ===== FORM FIELDS (ALIGNMENT & SYMMETRY) ===== */
@@ -236,7 +219,7 @@
             border: solid 1px #1f1f1f;
             border-radius: 4px;
             cursor: pointer;
-            font-weight: 500;
+            font-weight: 400;
             font-size: var(--font-size-body-md);
             letter-spacing: var(--letter-spacing-loose);
             text-transform: none;
@@ -244,9 +227,12 @@
             font-family: var(--font-family);
         }
 
-        .code-button:hover:not(:disabled) {
-            background-color: var(--color-bg-secondary);
-            border-color: #c9c7ba;
+       .code-button:hover:not(:disabled) {
+            background: linear-gradient(45deg, #060c18, #1a2f5a, #213a6c);
+            
+            color: var(--color-accent-primary);
+            border: solid 1px #384278;
+            border-radius: 4px;
             transform: translateY(-1px);
         }
 
@@ -257,12 +243,12 @@
 
         .code-validity {
             font-size: var(--font-size-body-sm);
-            color: var(--color-gray-light);
-            letter-spacing: var(--letter-spacing-normal);
+            color: var(--color-accent-secondary);
+            letter-spacing: var(--letter-spacing-loose);
         }
 
         .error-message {
-            color: #f87171;
+            color: #fa8f8f;
             font-size: var(--font-size-body-sm);
             margin-top: var(--space-xs);
         }
@@ -282,8 +268,8 @@
         }
 
         .content-section {
-            margin-top: var(--space-exxl);
-            min-height: 50vh;
+            margin-top: var(--space-xxl);
+            min-height: 40vh;
             border-bottom: 1px solid var(--color-border);
         }
 
@@ -373,12 +359,12 @@
         }
 
         .capabilities-container .split-feature-eyebrow {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.18em;
-            color: var(--color-accent-primary); /* Oliwkowy akcent spójny z resztą designu */
+            font-size: var(--font-size-body-lg);
+            
+            letter-spacing: var(--letter-spacing-loose);
+            color: var(--color-accent-secondary);
             margin-bottom: var(--space-lg);
-            font-weight: 600;
+            font-weight: 500;
         }
 
         .capabilities-grid {
@@ -401,20 +387,20 @@
         }
 
         .cap-card:hover {
-            background-color: rgba(255, 255, 255, 0.04);
-            border-color: rgba(255, 255, 255, 0.15);
+            background-color: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.20);
         }
 
         .cap-num {
             font-size: var(--font-size-body-sm);
-            color: var(--color-gray-dark);
+            color: var(--color-gray-light);
             font-weight: 500;
-            margin-bottom: var(--space-xl); /* Większy dystans pionowy cyfry */
+            margin-bottom: var(--space-md); /* Większy dystans pionowy cyfry */
             letter-spacing: var(--letter-spacing-loose);
         }
 
-        .cap-card h3 {
-            font-size: 26px; /* Powiększony pod nową przestrzeń 2x2 */
+        .cap-card h4 {
+            font-size: var(--font-size-h4);
             font-weight: 400;
             color: var(--color-white-pure);
             margin-bottom: var(--space-sm);
@@ -650,7 +636,7 @@
             }
         }
 
-        /* ===== SPLIT FEATURE SECTION (STYLE Z IMAGE_795A51.PNG) ===== */
+        /* ===== SPLIT FEATURE SECTION  ===== */
         .split-feature-section {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -661,12 +647,20 @@
         }
 
         .split-feature-eyebrow {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.18em;
-            color: #848d76; /* Subtelny sage/oliwkowy odcień z makiety screena */
+            font-size: var(--font-size-body-lg);
+            letter-spacing: var(--letter-spacing-normal);
+            color: var(--color-accent-secondary);
             margin-bottom: var(--space-lg);
-            font-weight: 600;
+            font-weight: 500;
+        }
+
+        /* H3 styling for section eyebrows */
+        h3 {
+            font-size: var(--font-size-body-lg);
+            letter-spacing: var(--letter-spacing-normal);
+            color: var(--color-accent-secondary);
+            margin-bottom: var(--space-lg);
+            font-weight: 500;
         }
 
         .split-feature-left p {
@@ -729,7 +723,7 @@
         
         /* ===== TABS COMPONENT ===== */
         .tabs-container {
-            margin-top: var(--space-exxl);
+            margin-top: var(--space-xxl);
             margin-bottom: var(--space-xxl);
             padding-bottom: var(--space-xxl);
             border-bottom: 1px solid var(--color-border);
@@ -745,13 +739,13 @@
         .tab-button {
             background: none;
             border: none;
-            color: #848d76;
-            font-size: 11px;
-            font-weight: 600;
+            color: var(--color-accent-primary);
+            font-size: 21px;
+            font-weight: 500;
             cursor: pointer;
             padding: 0;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
+            letter-spacing: var(--letter-spacing-normal);
+             font-family: var(--font-family);
             transition: color 0.2s ease;
             position: relative;
         }
@@ -785,7 +779,8 @@
         }
 
         .tab-panel p {
-            font-size: var(--font-size-body-lg);
+            font-size: var(--font-size-body-md);
+            font-weight: 300;
             line-height: var(--line-height-body);
             margin-bottom: var(--space-md);
         }
@@ -808,10 +803,9 @@
 
         /* ===== SECTION DIVIDERS ===== */
         /* Dla kogo */
-        .capabilities-container {
+        #dla-kogo {
             border-bottom: 1px solid var(--color-border);
             padding-bottom: var(--space-xxl);
-            margin-bottom: var(--space-xxl);
         }
 
         /* Wyróżniki */
@@ -821,7 +815,7 @@
 
         /* Metodologia & Jak to działa */
         #jak-dziala {
-            border-bottom: none;
+            border-bottom: 1px solid var(--color-border);
         }
 
         /* Szczegóły sesji */
@@ -840,6 +834,110 @@
             border-bottom: 1px solid var(--color-border);
         }
 
+        /* ===== ACCORDION COMPONENT ===== */
+        .accordion-container {
+            padding-top: 32px;
+            padding-bottom: var(--space-lg);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-lg);
+        }
+
+        .accordion-item {
+            
+            border: 1px solid rgba(140, 139, 139, 0.04);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .accordion-item:hover {
+            background-color: rgba(255, 255, 255, 0.04);
+            border-color:  rgb(175, 144, 116, 0.5);
+        }
+
+        .accordion-header {
+            width: 100%;
+            padding: var(--space-lg);
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1rem;
+            font-weight: 500;
+            text-align: left;
+            transition: opacity 0.2s ease;
+            color: var(--color-white-pure);
+            border: none;
+        }
+
+        .accordion-header:hover {
+            opacity: 0.7;
+        }
+
+        .accordion-title {
+            flex: 1;
+            
+        }
+
+        .accordion-title p {
+            font-size: var(--font-size-body-md);
+        }
+
+        .accordion-icon {
+            margin-left: var(--space-sm);
+            font-size: 1.25rem;
+            transition: transform 0.3s ease;
+            min-width: 24px;
+            text-align: right;
+        }
+
+        .accordion-header[aria-expanded="true"] .accordion-icon {
+            transform: rotate(45deg);
+        }
+
+        .accordion-content {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1), padding 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    
+}
+
+.accordion-header[aria-expanded="true"] + .accordion-content {
+    max-height: 600px;
+    padding: 0 var(--space-lg) var(--space-lg);
+}
+
+.accordion-icon {
+    margin-left: var(--space-sm);
+    font-size: 1.25rem;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    min-width: 24px;
+    text-align: right;
+}
+
+        .accordion-body {
+            line-height: 1.6;
+            color: var(--color-text, inherit);
+            font-size: var(--font-size-body-md);
+            font-weight: 300;
+            letter-spacing: var(--letter-spacing-loose);
+        }
+
+        .accordion-content {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1), padding 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    padding: 0 var(--space-lg) 0;
+}
+
+.accordion-header[aria-expanded="true"] + .accordion-content {
+    max-height: 600px;
+    padding: 0 var(--space-lg) var(--space-lg);
+}
+
         /* ===== COPYRIGHT FOOTER ===== */
         .copyright-footer {
             text-align: center;
@@ -853,11 +951,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@darkroom/lenis@latest"></script>
 </head>
 <body>
-    <!-- VIDEO BACKGROUND -->
-    <video id="bg-video" autoplay muted loop playsinline>
-        <source src="./0_Abstract_Dark_1920x1080.mp4" type="video/mp4">
-    </video>
-
     <!-- HEADER (Miejsce startowe dla języka) -->
     <header class="header">
         <span class="language-toggle-text" id="lang-switcher">PL | EN</span>
@@ -942,35 +1035,35 @@
             </div>
 
             <!-- ===== DLA KOGO JEST TA USŁUGA (PREMIUM BENTO GRID 2x2) ===== -->
-            <div class="capabilities-container">
-                <div class="split-feature-eyebrow" id="dla-kogo">Moja metoda sprawdzi się dla</div>
+            <div class="capabilities-container" id="dla-kogo">
+                <h3 class="split-feature-eyebrow">Moja metoda sprawdzi się dla</h3>
                 
                 <div class="capabilities-grid">
                     <!-- Card 01 -->
                     <div class="cap-card">
                         <span class="cap-num">01</span>
-                        <h3>Przedsiębiorca lub menedżer</h3>
+                        <h4>Przedsiębiorców lub menedżerów</h4>
                         <p>chcesz poddać w wątpliwość utarte schematy, zachowania lub założenia</p>
                     </div>
 
                     <!-- Card 02 -->
                     <div class="cap-card">
                         <span class="cap-num">02</span>
-                        <h3>Twórca lub profesjonalista</h3>
+                        <h4>Twórców lub profesjonalistów</h4>
                         <p>potrzebujesz uporządkować złożone myśli lub potrzebujesz szerszej, przemyślanej opinii</p>
                     </div>
 
                     <!-- Card 03 -->
                     <div class="cap-card">
                         <span class="cap-num">03</span>
-                        <h3>Niezależny myśliciel</h3>
+                        <h4>Niezależnych myślicieli</h4>
                         <p>zmagasz się z nadmiernym analizowaniem lub paraliżem decyzyjnym</p>
                     </div>
 
                     <!-- Card 04 -->
                     <div class="cap-card">
                         <span class="cap-num">04</span>
-                        <h3>Osoby w obliczu niepewności i zmian</h3>
+                        <h4>Osób w obliczu niepewności i zmian</h4>
                         <p>czujesz się zagubiony/a między różnymi opcjami lub decyzjami, potrzebujesz świeżego spojrzenia na sytuację</p>
                     </div>
                 </div>
@@ -979,7 +1072,7 @@
             <!-- ===== WYRÓŻNIKI ===== -->
             <div class="content-section split-feature-section" id="wyrozniki">
                 <div class="split-feature-left">
-                    <div class="split-feature-eyebrow">Co wyróżnia Second Thought</div>
+                    <h3 class="split-feature-eyebrow">Co wyróżnia Second Thought</h3>
                     <p>
                         Większość ludzi nie potrzebuje kolejnych opinii. Potrzebują kogoś, kto potrafi zadawać właściwe pytania.
             Second Thought oferuje spokojną, uporządkowaną, zewnętrzną perspektywę, wolną od emocjonalnych uprzedzeń, 
@@ -993,10 +1086,8 @@
                         po mentalnym chaosie. Tak czy inaczej, sesja wywołuje ruch.</p>
                 </div>
                 <div class="split-feature-right">
-                    <div class="split-feature-eyebrow">Co razem zrobimy</div>
-                    <p class="intro-text">
-                        Razem możemy zidentyfikować:
-                    </p>
+                    <h3 class="split-feature-eyebrow">Razem możemy zidentyfikować</h3>
+                   
                     
                     <div class="split-feature-list">
                         <div class="split-feature-item">
@@ -1021,7 +1112,7 @@
 
             <!-- ===== FILTRY METODOLOGICZNE & JAK TO DZIAŁA ===== -->
             <div class="content-section" id="jak-dziala">
-                <div class="split-feature-eyebrow">Filtry metodologiczne Second Thought</div>
+                <h3 class="split-feature-eyebrow">Filtry metodologiczne Second Thought</h3>
                 
                 <p class="intro-text">
                     Pytania, które usłyszysz podczas sesji, będą na bazie narzędzi analitycznych — nie poczujesz tego bo rozmowa jest bardzo naturalna. Przeprowadzimy Twoje wyzwanie przez takie filary jak:
@@ -1030,42 +1121,61 @@
                 <div class="methodology-grid">
                     <!-- Metodologia 01 -->
                     <div class="cap-card">
-                        <span class="cap-num">01</span>
-                        <h3>Głębokie źródło problemu</h3>
-                        <p><strong>5 Why / Ishikawa</strong></p>
-                        <p>Rozbijamy skomplikowane sytuacje biznesowe i osobiste za pomocą matrycy przyczynowo-skutkowej. Docieramy do pierwotnego ogniwa, którego zmiana automatycznie naprawia całą resztę procesu.</p>
-                    </div>
+  <div class="cap-num">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" stroke-width="1.5" stroke="var(--color-accent-secondary)" width="20" height="20">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M9 9V4.5M9 9H4.5M9 9 3.75 3.75M9 15v4.5M9 15H4.5M9 15l-5.25 5.25M15 9h4.5M15 9V4.5M15 9l5.25-5.25M15 15h4.5M15 15v4.5m0-4.5 5.25 5.25" />
+    </svg>
+  </div>
+                    
+  <h4>Głębokie źródło problemu</h4>
+  <p><strong>5 Why / Ishikawa</strong></p>
+  <p>Rozbijamy skomplikowane sytuacje biznesowe i osobiste za pomocą matrycy przyczynowo-skutkowej. Docieramy do pierwotnego ogniwa, którego zmiana automatycznie naprawia całą resztę procesu.</p>
+</div>
+
 
                     <!-- Metodologia 02 -->
-                    <div class="cap-card">
-                        <span class="cap-num">02</span>
-                        <h3>Matryca odporności na błędy</h3>
-                        <p><strong>FMEA</strong></p>
-                        <p>Poddajemy Twoją decyzję lub nowe przedsięwzięcie testowi warunków skrajnych. Narzędzie FMEA pomaga oszacować ryzyko i zabezpieczyć Cię przed potknięciem tam, gdzie inni działają po omacku.</p>
-                    </div>
+                    
+<div class="cap-card">
+  <div class="cap-num">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="var(--color-accent-secondary)" width="20" height="20">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M9 4.5v15m6-15v15m-10.875 0h15.75c.621 0 1.125-.504 1.125-1.125V5.625c0-.621-.504-1.125-1.125-1.125H4.125C3.504 4.5 3 5.004 3 5.625v12.75c0 .621.504 1.125 1.125 1.125Z" />
+    </svg>
+  </div>
+  <h4>Matryca odporności na błędy</h4>
+  <p><strong>FMEA</strong></p>
+  <p>Poddajemy Twoją decyzję lub nowe przedsięwzięcie testowi warunków skrajnych. Narzędzie FMEA pomaga oszacować ryzyko i zabezpieczyć Cię przed potknięciem tam, gdzie inni działają po omacku.</p>
+</div>
 
                     <!-- Metodologia 03 -->
                     <div class="cap-card">
-                        <span class="cap-num">03</span>
-                        <h3>Audyt Celowości</h3>
-                        <p><strong>Weryfikacja & Walidacja</strong></p>
-                        <p>Zanim zainwestujesz zasoby, upewniamy się, czy Twoje plany są wewnętrznie spójne i oparte na danych oraz czy ich realizacja rzeczywiście może rozwiązać problem czy wyzwanie, z którym się mierzysz.</p>
-                    </div>
+  <div class="cap-num">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="var(--color-accent-secondary)" width="20" height="20">
+      <path stroke-linecap="round" stroke-linejoin="round" d="m15.75 15.75-2.489-2.489m0 0a3.375 3.375 0 1 0-4.773-4.773 3.375 3.375 0 0 0 4.774 4.774ZM21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+    </svg>
+  </div>
+  <h4>Audyt Celowości</h4>
+  <p><strong>Weryfikacja & Walidacja</strong></p>
+  <p>Zanim zainwestujesz zasoby, upewniamy się, czy Twoje plany są wewnętrznie spójne i oparte na danych oraz czy ich realizacja rzeczywiście może rozwiązać problem czy wyzwanie, z którym się mierzysz.</p>
+</div>
 
                     <!-- Metodologia 04 -->
                     <div class="cap-card">
-                        <span class="cap-num">04</span>
-                        <h3>Odchudzanie codziennej rutyny</h3>
-                        <p><strong>Process Optimization</strong></p>
-                        <p>Analizujemy architekturę Twoich nawyków i procesów operacyjnych. Wyznaczamy do eliminacji z Twojego otoczenia i harmonogramu tarcia oraz przeszkody, uwalniając zasoby do kluczowych działań.</p>
-                    </div>
+  <div class="cap-num">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="var(--color-accent-secondary)" width="20" height="20">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15 13.5H9m4.06-7.19-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z" />
+    </svg>
+  </div>
+  <h4>Odchudzanie codziennej rutyny</h4>
+  <p><strong>Process Optimization</strong></p>
+  <p>Analizujemy architekturę Twoich nawyków i procesów operacyjnych. Wyznaczamy do eliminacji z Twojego otoczenia i harmonogramu tarcia oraz przeszkody, uwalniający zasoby do kluczowych działań.</p>
+</div>
                 </div>
             </div>
 
             <!-- ===== SZCZEGÓŁY SESJI ===== -->
             <div class="content-section split-feature-section">
                 <div class="split-feature-right">
-                    <div class="split-feature-eyebrow">Jak to działa</div>
+                    <h3 class="split-feature-eyebrow">Jak to działa</h3>
                     <p class="intro-text">
                         Szczegóły sesji
                     </p>
@@ -1089,40 +1199,67 @@
                         </div>
                     </div>
                 </div>
-                <div class="split-feature-left">
-                    <div class="split-feature-eyebrow">Więcej</div>
-                    <p>
-                        <strong>Partnerstwo</strong><br> 
-            Współpraca, a nie wykład.
-            Rozmawiamy jak równy z równym. Ty przedstawiasz swoją sytuację, 
-            a ja wnoszę dystans, obiektywizm i analityczną strukturę. 
-                    </p>
+              <div class="accordion-container">
+  <div class="accordion-item">
+    <button class="accordion-header" aria-expanded="false">
+      <span class="accordion-title">Partnerstwo, a nie wykład</span>
+      <span class="accordion-icon">+</span>
+    </button>
+    <div class="accordion-content" >
+      <div class="accordion-body">
+        Rozmawiamy jak równy z równym. Ty przedstawiasz swoją sytuację, a ja wnoszę dystans, obiektywizm i analityczną strukturę.
+      </div>
+    </div>
+  </div>
 
-                    <p>
-                        <strong>Szczerość i bezpośredniość</strong><br> 
-            Bezpośrednio, ale konstruktywnie. <br>
-            To szczera rozmowa. Nie powiem Ci tego, co chcesz usłyszeć — pomogę Ci zbadać, 
-            co faktycznie jest prawdą. 
-                    </p>
+  <div class="accordion-item">
+    <button class="accordion-header" aria-expanded="false">
+      <span class="accordion-title"><strong>Bezpośrednio, ale konstruktywnie</strong></span>
+      <span class="accordion-icon">+</span>
+    </button>
+    <div class="accordion-content" >
+      <div class="accordion-body">
+        To szczera rozmowa. Nie powiem Ci tego, co chcesz usłyszeć — pomogę Ci zbadać, co faktycznie jest prawdą.
+      </div>
+    </div>
+  </div>
 
-                    <p>
-                        <strong>Poufność</strong><br> 
-            Całkowita poufność. Każda rozmowa pozostaje prywatna i dyskretna.
-                    </p>
+  <div class="accordion-item">
+    <button class="accordion-header" aria-expanded="false">
+      <span class="accordion-title"><strong>Całkowicie poufne</strong></span>
+      <span class="accordion-icon">+</span>
+    </button>
+    <div class="accordion-content" >
+      <div class="accordion-body">
+        Każda rozmowa pozostaje prywatna i dyskretna.
+      </div>
+    </div>
+  </div>
 
-                    <p>
-                        <strong>Brak schematu</strong><br> 
-            Żadnych ogólnych schematów. <br>
-            Żadnych scenariuszy. Żadnych formuł. Żadnych motywacyjnych frazesów. 
-            Każda sesja jest w całości dostosowana do Ciebie i Twojej sytuacji.
-                    </p>
+  <div class="accordion-item">
+    <button class="accordion-header" aria-expanded="false">
+      <span class="accordion-title"><strong>Brak schematu</strong></span>
+      <span class="accordion-icon">+</span>
+    </button>
+    <div class="accordion-content" >
+      <div class="accordion-body">
+        Żadnych ogólnych schematów. Żadnych scenariuszy. Żadnych formuł. Żadnych motywacyjnych frazesów. Każda sesja jest w całości dostosowana do Ciebie i Twojej sytuacji.
+      </div>
+    </div>
+  </div>
 
-                    <p>
-                        <strong>Efekty</strong><br> 
-            Może to być przełom w sposobie myślenia, nagłe rozjaśnienie sprawy albo… 
-            uświadomienie sobie, że musisz szukać dalej. Nie gwarantuję "magicznego rozwiązania".
-                    </p>
-                </div>
+  <div class="accordion-item">
+    <button class="accordion-header" aria-expanded="false">
+      <span class="accordion-title"><strong>Efekty</strong></span>
+      <span class="accordion-icon">+</span>
+    </button>
+    <div class="accordion-content" >
+      <div class="accordion-body">
+        Może to być przełom w sposobie myślenia, nagłe rozjaśnienie sprawy albo… uświadomienie sobie, że musisz szukać dalej. Nie gwarantuję "magicznego rozwiązania".
+      </div>
+    </div>
+  </div>
+</div>
             </div>
 
             <div class="tabs-container" id="cena-rezerwacja">
@@ -1134,8 +1271,8 @@
                 <div class="tabs-content">
                     <!-- TAB: Cena -->
                     <div id="tab-price" class="tab-panel active">
-                        <div class="split-feature-eyebrow">cena</div>
-                        <p><strong>Sesja: 400 PLN</strong></p>
+                        
+                        <h3><strong>Sesja: 400 PLN</strong></h3>
                         <p>
                             100 PLN* przez Blik (na wskazany numer poniżej) przy rezerwacji (depozyt gwarantujący miejsce).<br>
                             Jeśli nie dojedziesz, nie pojawisz się, depozyt zostaje utracony.
@@ -1162,7 +1299,7 @@
             <!-- ===== KONTAKT ===== -->
 
              <div class="content-section" id="kontakt">
-                <div class="split-feature-eyebrow">Kontakt</div>
+                <h3 class="split-feature-eyebrow">Kontakt</h3>
                 <p>
                     <strong>WhatsApp/Blik:</strong> +48 000 000 000<br>
                     <strong>Email:</strong> secondthought.msa@gmail.com
@@ -1172,7 +1309,7 @@
            <!-- ===== SESJA INFO (O MNIE) ===== -->
 
             <div class="content-section">
-                <div class="split-feature-eyebrow">Meet Your Guide Behind "Second Thought"</div>
+                <h3 class="split-feature-eyebrow">Meet Your Guide Behind "Second Thought"</h3>
                 <p>
                     <strong>Magdalena Stodulska</strong>
                 </p>
@@ -1221,23 +1358,6 @@ i logiczny sposób radzenia sobie z codziennymi aspektami obecnymi w sferze zarz
         // ===== CONFIGURATION =====
         const SPREADSHEET_ID = '1SXHXcvsVMnDLk6k94s9S0RSNTYMx8o_5TTjgFtm71nY';
         const SERVICE_ACCOUNT_EMAIL = 'second-thought@secondthought-501318.iam.gserviceaccount.com';
-
-        // ===== VIDEO AUTOPLAY FORCE =====
-        function initializeVideo() {
-            const video = document.getElementById('bg-video');
-            if (video) {
-                const playPromise = video.play();
-                if (playPromise !== undefined) {
-                    playPromise
-                        .then(() => {
-                            console.log('✓ Video autoplay successful');
-                        })
-                        .catch(error => {
-                            console.log('⚠ Autoplay restricted by browser policy, video loaded');
-                        });
-                }
-            }
-        }
 
         // ===== FUNCTIONS =====
         function isTokenValid() {
@@ -1354,14 +1474,22 @@ i logiczny sposób radzenia sobie z codziennymi aspektami obecnymi w sferze zarz
         }
 
         window.addEventListener('load', () => {
-            initializeVideo();
-            
             if (isTokenValid()) {
                 showAccessSection();
             } else {
                 showWelcomeSection();
             }
         });
+
+   // ===== ACCORDION FUNCTIONALITY =====
+document.querySelectorAll('.accordion-header').forEach(button => {
+    button.addEventListener('click', () => {
+        const isExpanded = button.getAttribute('aria-expanded') === 'true';
+        button.setAttribute('aria-expanded', !isExpanded);
+        
+        const content = button.nextElementSibling;
+    });
+});
 
         // ===== TABS FUNCTIONALITY =====
         document.addEventListener('DOMContentLoaded', () => {
@@ -1384,8 +1512,6 @@ i logiczny sposób radzenia sobie z codziennymi aspektami obecnymi w sferze zarz
 
         // ===== BURGER MENU & NAVIGATION =====
         document.addEventListener('DOMContentLoaded', () => {
-            initializeVideo();
-
             const burgerBtn = document.getElementById('burger-btn');
             const navLinks = document.getElementById('nav-links');
 
