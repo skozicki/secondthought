@@ -13,12 +13,12 @@
             --color-gray-light: #C4C7D0;
             --color-gray-dark: #606470;
             --color-bg-primary: #010102;
-            --color-bg-secondary: #11152c;
+            --color-bg-secondary: #0d1123;
             --color-border: rgba(255, 255, 255, 0.08);
             --color-border-focus: rgba(255, 255, 255, 0.3);
-            --color-accent-primary: #FCDCC3;
-            --color-accent-secondary: #C3A185;
-            --color-accent-tertiary: #AF9074;
+            --color-accent-primary: #D0C4AA;
+            --color-accent-secondary: #b6a88b;
+            --color-accent-tertiary: rgb(160, 127, 99);
             
             /* Premium Button States */
             --color-btn-bg: #FFFFFF;
@@ -82,7 +82,7 @@
 
         /* ===== GRADIENT BACKGROUND ===== */
         body {
-            background: radial-gradient(ellipse at 50% 30%, #1a2f5a 0%, #0f1a35 40%, #050811 100%);
+            background: radial-gradient(ellipse at 50% 30%, #1a2f5a 0%, #0f1a35 40%, #000000 100%);
             background-attachment: fixed;
         }
 
@@ -219,7 +219,7 @@
             border: solid 1px #1f1f1f;
             border-radius: 4px;
             cursor: pointer;
-            font-weight: 400;
+            font-weight: 500;
             font-size: var(--font-size-body-md);
             letter-spacing: var(--letter-spacing-loose);
             text-transform: none;
@@ -1288,10 +1288,11 @@
                     <!-- TAB: Zarezerwuj sesję -->
                     <div id="tab-booking" class="tab-panel">
                         <div class="split-feature-eyebrow">Zarezerwuj sesję</div>
-                        <p>Kliknij poniżej aby wybrać dostępny termin:</p>
-                        <p>
-                            <em>[Tutaj będzie Calendly embed - dodamy podczas integracji]</em>
-                        </p>
+                        <p>Kliknij poniżej aby wybrać dogodny dla siebie termin</p>
+                        <!-- Calendly inline widget begin -->
+<div class="calendly-inline-widget" data-url="https://calendly.com/secondthought-msa/90min?hide_event_type_details=1&hide_gdpr_banner=1&background_color=0f1a35&text_color=f2f2f2&primary_color=d0c4aa" style="min-width:320px;height:700px;"></div>
+<script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+<!-- Calendly inline widget end -->
                     </div>
                 </div>
             </div>
@@ -1301,7 +1302,7 @@
              <div class="content-section" id="kontakt">
                 <h3 class="split-feature-eyebrow">Kontakt</h3>
                 <p>
-                    <strong>WhatsApp/Blik:</strong> +48 000 000 000<br>
+                    <strong>WhatsApp/Blik:</strong> +48 572 719 203<br>
                     <strong>Email:</strong> secondthought.msa@gmail.com
                 </p>
             </div>
