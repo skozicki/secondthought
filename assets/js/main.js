@@ -35,6 +35,64 @@
     showOnepager(false);
   }
 
+  /* ---------- Letter shuffle intro (welcome screen) ----------
+     All letters spin randomly for ~2 s, then "> SECOND / THOUGHT" is revealed
+     and the remaining letters stop on random characters. */
+  (function letterShuffle() {
+    var grid = document.getElementById('letter-grid');
+    if (!grid || welcome.hidden) return;
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var ALPHABET = 'ABCDEFGHIJKLMNOPRSTUVWXYZ';
+    var DURATION = 2000;   // shuffle time before the key words reveal
+    var TICK = 70;         // how often letters change while spinning
+    var cells = Array.prototype.slice.call(grid.children);
+
+    function rand() { return ALPHABET.charAt(Math.floor(Math.random() * ALPHABET.length)); }
+
+    cells.forEach(function (cell, i) {
+      var isKey = cell.classList.contains('is-key');
+      cell.dataset.final = isKey ? cell.textContent : rand();
+      // background letters stop gradually during the last part of the shuffle,
+      // key letters reveal one after another right after 2 s
+      var keyIndex = cells.filter(function (c, j) { return j < i && c.classList.contains('is-key'); }).length;
+      cell.dataset.stopAt = isKey
+        ? DURATION + keyIndex * 45
+        : DURATION * (0.55 + Math.random() * 0.45);
+    });
+
+    if (reduceMotion) {
+      cells.forEach(function (cell) { cell.textContent = cell.dataset.final; });
+      return;
+    }
+
+    grid.classList.add('is-shuffling');
+    var start = null;
+    var last = 0;
+
+    function frame(now) {
+      if (start === null) start = now;
+      var elapsed = now - start;
+      var tick = now - last >= TICK;
+      if (tick) last = now;
+      var running = false;
+
+      cells.forEach(function (cell) {
+        if (cell.classList.contains('is-settled')) return;
+        if (elapsed >= Number(cell.dataset.stopAt)) {
+          cell.textContent = cell.dataset.final;
+          cell.classList.add('is-settled');
+        } else {
+          running = true;
+          if (tick) cell.textContent = rand();
+        }
+      });
+
+      if (running) window.requestAnimationFrame(frame);
+      else grid.classList.remove('is-shuffling');
+    }
+    window.requestAnimationFrame(frame);
+  })();
+
   /* ---------- Language toggle (visual only for now) ---------- */
   document.querySelectorAll('[aria-label="Język"]').forEach(function (group) {
     var buttons = group.querySelectorAll('button');
