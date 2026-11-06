@@ -1,1541 +1,458 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Second Thought</title>
-    <style>
-        /* ===== DESIGN TOKENS (GOLDEN RATIO & FIBONACCI SYSTEM) ===== */
-        :root {
-            /* Luxury Monochrome Design Palette */
-            --color-white-pure: #FFFFFF;
-            --color-white-muted: #E2E4E9;
-            --color-gray-light: #C4C7D0;
-            --color-gray-dark: #606470;
-            --color-bg-primary: #010102;
-            --color-bg-secondary: #0d1123;
-            --color-border: rgba(255, 255, 255, 0.08);
-            --color-border-focus: rgba(255, 255, 255, 0.3);
-            --color-accent-primary: #D0C4AA;
-            --color-accent-secondary: #b6a88b;
-            --color-accent-tertiary: rgb(160, 127, 99);
-            
-            /* Premium Button States */
-            --color-btn-bg: #FFFFFF;
-            --color-btn-text: #0a0e27;
-            --color-btn-hover: #E2E4E9;
-
-            /* Typography Scale (Base 16px, Proportions derived from Phi 1.618) */
-            --font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, 'Neue Haas Grotesk Display Pro', sans-serif;
-            
-            --font-size-h1: 84px;          /* Premium Tight Display */
-            --font-size-h2: 36px;          /* Heading Scale Step */
-            --font-size-h3: 26px;
-            --font-size-h4: 21px;
-            --font-size-body-lg: 21px;     /* Sub-display layer */
-            --font-size-body-md: 16px;     /* Standard UI text */
-            --font-size-body-sm: 13px;     /* Micro/Functional text */
-
-            /* Line Heights (Golden Proportions: Tight for headers, open for reading) */
-            --line-height-display: 1.15;
-            --line-height-heading: 1.3;
-            --line-height-body: 1.618;
-
-            /* Letter Spacing (Zaktualizowany pod Plus Jakarta Sans) */
-            --letter-spacing-display: -0.01em; /* Subtelne zaciśnięcie dla wielkich nagłówków */
-            --letter-spacing-tight: 0em;        /* Brak minusów dla standardowych tytułów */
-            --letter-spacing-normal: 0.02em;    /* Delikatny oddech dla podstawowego UI i mniejszych fontów */
-            --letter-spacing-body: 0.035em;     /* Ekskluzywne rozstrzelenie dla akapitów <p> */
-            --letter-spacing-loose: 0.08em;     /* Dla guzików, menu i mikro-tekstów uppercase */
-
-            /* Spacing Matrix (Pure Fibonacci Sequence for visual harmony) */
-            --space-xs: 8px;
-            --space-sm: 13px;
-            --space-md: 21px;
-            --space-lg: 34px;
-            --space-xl: 55px;
-            --space-xxl: 89px;
-            --space-exxl: 200px;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html, body {
-            font-family: var(--font-family);
-            color: var(--color-white-pure);
-            line-height: var(--line-height-body);
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-            scroll-behavior: auto;
-            scroll-padding-top: 160px;
-        }
-
-        /* GLOBLANY ODDECH DLA ZWYKŁYCH AKAPITÓW */
-        p {
-            letter-spacing: var(--letter-spacing-body);
-            font-size: var(--font-size-body-lg);
-        }
-
-        /* ===== GRADIENT BACKGROUND ===== */
-        body {
-            background: radial-gradient(ellipse at 50% 30%, #1a2f5a 0%, #0f1a35 40%, #000000 100%);
-            background-attachment: fixed;
-        }
-
-        main {
-            max-width: 980px;
-            margin: 0 auto;
-            padding: var(--space-xl) var(--space-md);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* ===== HEADER / LANGUAGE TOGGLE ===== */
-        .header {
-            position: fixed;
-            top: var(--space-lg);
-            right: var(--space-lg);
-            z-index: 10;
-        }
-
-        .language-toggle-text {
-            font-size: var(--font-size-body-sm);
-            color: var(--color-gray-light);
-            letter-spacing: var(--letter-spacing-loose);
-            font-weight: 400;
-            cursor: pointer;
-            transition: color 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-
-        .language-toggle-text:hover {
-            color: var(--color-white-pure);
-        }
-
-        /* ===== WELCOME SECTION ===== */
-        #welcome-section {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 80vh;
-            text-align: center;
-            width: 100%;
-        }
-
-        .welcome-content {
-            width: 100%;
-            max-width: 100%;
-            margin-top: var(--space-xxl);
-        }
-
-        .welcome-content h1 {
-            font-size: var(--font-size-h1);
-            font-weight: 400;
-            margin-bottom: var(--space-lg);
-            letter-spacing: var(--letter-spacing-display);
-            color: var(--color-white-pure);
-            line-height: var(--line-height-display);
-        }
-
-        .welcome-intro-light {
-            font-size: var(--font-size-body-lg);
-            color: var(--color-white-muted);
-            margin-bottom: var(--space-exxl); /* Golden Ratio Distance */
-            line-height: 1.7; /* Większy odstęp pionowy linii */
-            font-weight: 300;
-            letter-spacing: var(--letter-spacing-loose) !important; /* Zmiana z ujemnego/luźnego na optymalny plus */
-        }
-
-        .welcome-intro-light strong {
-            font-weight: 500;
-            color: var(--color-white-pure);
-        }
-
-        .welcome-instruction {
-            font-size: var(--font-size-body-md);
-            color: var(--color-gray-light);
-            margin-bottom: var(--space-md);
-            letter-spacing: var(--letter-spacing-loose);
-            font-weight: 300;
-        }
-
-        /* ===== FORM FIELDS (ALIGNMENT & SYMMETRY) ===== */
-        .code-section {
-            margin-bottom: var(--space-xl);
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-md);
-        }
-
-        .code-input-container {
-            position: relative;
-            width: 100%;
-            max-width: 320px;
-            margin: 0 auto;
-        }
-
-        .code-input {
-            width: 100%;
-            height: 48px; 
-            padding: 0 var(--space-md);
-            font-size: var(--font-size-body-md);
-            background-color: rgba(255, 255, 255, 0.03);
-            color: var(--color-white-pure);
-            border: 1px solid var(--color-border);
-            border-radius: 4px;
-            text-transform: uppercase;
-            letter-spacing: var(--letter-spacing-loose);
-            text-align: center;
-            font-family: var(--font-family);
-            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-
-        .code-input::placeholder {
-            color: var(--color-gray-dark);
-        }
-
-        .code-input:focus {
-            outline: none;
-            border-color: var(--color-border-focus);
-            background-color: rgba(255, 255, 255, 0.06);
-        }
-
-        .code-button {
-            width: 100%;
-            max-width: 320px;
-            height: 48px; /* Synced scale with input */
-            margin: 0 auto;
-            background: linear-gradient(45deg, var(--color-accent-tertiary), var(--color-accent-secondary), var(--color-accent-primary));
-            color: var(--color-btn-text);
-            border: solid 1px #1f1f1f;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 500;
-            font-size: var(--font-size-body-md);
-            letter-spacing: var(--letter-spacing-loose);
-            text-transform: none;
-            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-            font-family: var(--font-family);
-        }
-
-       .code-button:hover:not(:disabled) {
-            background: linear-gradient(45deg, #060c18, #1a2f5a, #213a6c);
-            
-            color: var(--color-accent-primary);
-            border: solid 1px #384278;
-            border-radius: 4px;
-            transform: translateY(-1px);
-        }
-
-        .code-button:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-
-        .code-validity {
-            font-size: var(--font-size-body-sm);
-            color: var(--color-accent-secondary);
-            letter-spacing: var(--letter-spacing-loose);
-        }
-
-        .error-message {
-            color: #fa8f8f;
-            font-size: var(--font-size-body-sm);
-            margin-top: var(--space-xs);
-        }
-
-        .success-message {
-            color: #34d399;
-            font-size: var(--font-size-body-sm);
-            margin-top: var(--space-xs);
-        }
-
-        /* ===== ACCESS SECTION (EDITORIAL DESIGN) ===== */
-        #access-section {
-            display: none;
-            width: 100%;
-            max-width: 1080px;
-            margin-top: 160px;
-        }
-
-        .content-section {
-            margin-top: var(--space-xxl);
-            min-height: 40vh;
-            border-bottom: 1px solid var(--color-border);
-        }
-
-        .content-section:last-child {
-            border-bottom: none;
-        }
-
-        .content-section h2 {
-            font-size: var(--font-size-h2);
-            margin-bottom: var(--space-md);
-            font-weight: 400;
-            letter-spacing: var(--letter-spacing-tight);
-            line-height: var(--line-height-heading);
-        }
-
-        .content-section p {
-            color: var(--color-white-muted);
-            margin-bottom: var(--space-sm);
-            font-weight: 300;
-            line-height: 1.65;
-            letter-spacing: var(--letter-spacing-body); /* Rozluźniony, głęboki oddech tekstu */
-        }
-
-        .content-section ul {
-            list-style: none;
-            padding-left: 0;
-        }
-
-        .content-section li {
-            margin-bottom: var(--space-xs);
-            padding-left: var(--space-md);
-            position: relative;
-            color: var(--color-white-muted);
-            font-weight: 300;
-            letter-spacing: var(--letter-spacing-body);
-        }
-
-        .content-section li:before {
-            content: "—";
-            position: absolute;
-            left: 0;
-            color: var(--color-gray-dark);
-            font-weight: 400;
-        }
-
-        .logout-button {
-            margin-top: var(--space-md);
-            padding: var(--space-sm) var(--space-lg);
-            background-color: transparent;
-            color: var(--color-white-pure);
-            border: 1px solid var(--color-border);
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: var(--font-size-body-sm);
-            font-weight: 400;
-            letter-spacing: var(--letter-spacing-loose);
-            text-transform: uppercase;
-            transition: all 0.3s ease;
-        }
-
-        .logout-button:hover {
-            border-color: var(--color-white-pure);
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-
-        .test-btn-style {
-            background-color: transparent;
-            border: 1px solid var(--color-border);
-            color: var(--color-white-pure);
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .token-info {
-            font-size: var(--font-size-body-sm);
-            color: var(--color-gray-dark);
-            margin-top: var(--space-xl);
-            padding-top: var(--space-lg);
-            border-top: 1px solid var(--color-border);
-        }
-
-        /* ===== CAPABILITIES SECTION (PREMIUM BENTO GRID 2x2) ===== */
-        .capabilities-container {
-            width: 100%;
-            margin-bottom: var(--space-xxl); /* Idealny oddech 89px */
-            margin-top: var(--space-xxl); 
-        }
-
-        .capabilities-container .split-feature-eyebrow {
-            font-size: var(--font-size-body-lg);
-            
-            letter-spacing: var(--letter-spacing-loose);
-            color: var(--color-accent-secondary);
-            margin-bottom: var(--space-lg);
-            font-weight: 500;
-        }
-
-        .capabilities-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr); /* Stabilny układ 2x2 na desktopie */
-            gap: var(--space-lg); /* Przestronny odstęp 34px między kafelkami */
-            width: 100%;
-        }
-
-        .cap-card {
-            background-color: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--color-border);
-            border-radius: 12px;
-            padding: var(--space-xl); /* Maksymalny oddech wewnątrz kafelka - 55px */
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            text-align: left;
-            transition: background-color 0.4s ease, border-color 0.4s ease;
-        }
-
-        .cap-card:hover {
-            background-color: rgba(255, 255, 255, 0.06);
-            border-color: rgba(255, 255, 255, 0.20);
-        }
-
-        .cap-num {
-            font-size: var(--font-size-body-sm);
-            color: var(--color-gray-light);
-            font-weight: 500;
-            margin-bottom: var(--space-md); /* Większy dystans pionowy cyfry */
-            letter-spacing: var(--letter-spacing-loose);
-        }
-
-        .cap-card h4 {
-            font-size: var(--font-size-h4);
-            font-weight: 400;
-            color: var(--color-white-pure);
-            margin-bottom: var(--space-sm);
-            letter-spacing: var(--letter-spacing-normal);
-            line-height: var(--line-height-heading);
-        }
-
-        .cap-card p {
-            font-size: 15px;
-            color: var(--color-gray-light);
-            line-height: 1.65;
-            font-weight: 300;
-            letter-spacing: var(--letter-spacing-loose);
-            margin-bottom: 0 !important;
-        }
-
-        /* ===== METHODOLOGY FILTERS GRID (VERTICAL LAYOUT) ===== */
-        .methodology-grid {
-            display: grid;
-            grid-template-columns: 1fr; /* Single column for methodology - emphasizes process flow */
-            gap: var(--space-lg);
-            padding: var(--space-xxl) 0;
-        }
-
-        .methodology-grid .cap-card {
-            padding: var(--space-lg);
-            background-color: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--color-border);
-            border-radius: 12px;
-            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .methodology-grid .cap-card:hover {
-            background-color: rgba(255, 255, 255, 0.04);
-            border-color: rgba(255, 255, 255, 0.15);
-        }
-
-        /* RWD - Dostosowanie bento grid i oddechów do mniejszych urządzeń */
-        @media (max-width: 820px) {
-            .capabilities-grid {
-                grid-template-columns: 1fr; /* 1 kolumna na tabletach i smartfonach */
-                gap: var(--space-md);
-            }
-            .cap-card {
-                padding: var(--space-lg); /* Bezpieczniejsze 34px na mobile */
-            }
-            .cap-num {
-                margin-bottom: var(--space-lg);
-            }
-            .methodology-grid {
-                gap: var(--space-md);
-                padding: var(--space-xl) 0;
-            }
-        }
-
-        /* ===== RESPONSIVE DISCIPLINE ===== */
-        @media (max-width: 900px) {
-            .welcome-content h1 {
-                font-size: var(--font-size-h1);
-            }
-            :root {
-                --font-size-h1: 48px;
-                --font-size-h2: 28px;
-                --font-size-body-lg: 18px;
-            }
-            #welcome-section {
-                min-height: 70vh;
-            }
-            .welcome-intro-light {
-                margin-bottom: var(--space-xl);
-                letter-spacing: var(--letter-spacing-loose);
-            }
-        }
-
-        /* RWD - Korekta oddechów między głównymi sekcjami dla mobile */
-@media (max-width: 820px) {
-    .content-section {
-        margin-top: var(--space-xxl); /* Zmniejsza margines z 200px na 89px */
-        min-height: auto; /* Usuwa sztuczne rozciąganie sekcji na wysokość ekranu */
-    }
-
-    #access-section {
-        margin-top: 100px; /* Nieznacznie zmniejsza górny odstęp pierwszej sekcji pod menu */
-    }
-}
-
-        /* ===== FLOATING PREMIUM NAVBAR ===== */
-        .premium-navbar {
-            position: fixed;
-            top: var(--space-lg);
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 850px;
-            height: var(--space-xl);
-            padding: 0 var(--space-lg);
-            
-            background-color: rgba(10, 14, 39, 0.4);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 16px; /* Promień zmieniony na 8px */
-            
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 100;
-        }
-
-        .nav-logo {
-            color: var(--color-white-pure);
-            font-size: var(--font-size-body-md);
-            font-weight: 600;
-            letter-spacing: var(--letter-spacing-tight);
-        }
-
-        .burger-menu {
-            display: none; /* Domyślnie ukryte na desktopie */
-            color: var(--color-white-pure);
-            cursor: pointer;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: var(--space-lg);
-            align-items: center;
-        }
-
-        .nav-links a {
-            font-size: var(--font-size-body-sm);
-            color: var(--color-white-pure); /* Zawsze biały tekst */
-            text-decoration: none;
-            text-transform: uppercase;
-            letter-spacing: var(--letter-spacing-loose);
-            font-weight: 400;
-            transition: font-weight 0.2s ease;
-            
-            /* Zapobieganie skakaniu layoutu przy pogrubieniu */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        /* Pseudo-element rezerwujący przestrzeń dla tekstu Bold */
-        .nav-links a::after {
-            content: attr(title);
-            display: block;
-            font-weight: 700;
-            height: 0;
-            overflow: hidden;
-            visibility: hidden;
-        }
-
-        .nav-links a:hover {
-            font-weight: 700; /* Pogrubienie elementu na hover */
-            color: var(--color-accent-primary);
-        }
-
-        /* ===== RESET I STYLIZACJA JĘZYKA PO WRZUCENIU DO NAVBARU ===== */
-        .nav-links #lang-switcher {
-            position: static !important;
-            top: auto !important;
-            right: auto !important;
-            transform: none !important;
-            color: var(--color-white-pure) !important;
-            font-size: var(--font-size-body-sm) !important;
-            text-transform: uppercase;
-            letter-spacing: var(--letter-spacing-loose);
-            font-weight: 400;
-            cursor: pointer;
-            transition: font-weight 0.2s ease;
-            display: inline-block;
-        }
-
-        .nav-links #lang-switcher:hover {
-            font-weight: 700 !important; /* Pogrubienie języka na hover na desktopie */
-        }
-
-        /* ===== RESPONSIVE NAVBAR (MOBILE) ===== */
-        @media (max-width: 768px) {
-            .premium-navbar {
-                padding: 0 var(--space-md);
-            }
-            
-            .burger-menu {
-                display: block; /* Pokazujemy ikonę burgera */
-            }
-
-            .nav-links {
-                display: none; /* Ukryte do czasu kliknięcia burgera */
-                flex-direction: column;
-                position: absolute;
-                top: calc(100% + 8px); 
-                left: 0;
-                width: 100%;
-                background-color: rgba(10, 14, 39, 0.95);
-                backdrop-filter: blur(16px);
-                -webkit-backdrop-filter: blur(16px);
-                border: 1px solid rgba(255, 255, 255, 0.08);
-                border-radius: 8px;
-                padding: var(--space-md) 0;
-                gap: var(--space-md);
-                box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            }
-
-            /* Klasa aktywowana przez JavaScript */
-            .nav-links.active {
-                display: flex !important;
-            }
-
-            .nav-links a {
-                font-size: 14px;
-                width: 100%;
-                text-align: center;
-                padding: var(--space-xs) 0;
-            }
-
-            /* Pozycjonowanie i separacja języka na samym dole listy mobilnej */
-            .nav-links #lang-switcher {
-                display: flex !important;
-                justify-content: center;
-                align-items: center;
-                width: 100%;
-                border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
-                padding-top: var(--space-md) !important;
-                margin-top: var(--space-xs) !important;
-                color: var(--color-gray-light) !important;
-            }
-
-            .nav-links #lang-switcher:hover {
-                color: var(--color-white-pure) !important;
-                font-weight: 700 !important;
-            }
-        }
-
-        /* ===== SPLIT FEATURE SECTION  ===== */
-        .split-feature-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: var(--space-xxl); /* 89px odstępu między kolumnami */
-            padding: var(--space-xxl) 0;
-            align-items: start;
-            border-bottom: 1px solid var(--color-border);
-        }
-
-        .split-feature-eyebrow {
-            font-size: var(--font-size-body-lg);
-            letter-spacing: var(--letter-spacing-normal);
-            color: var(--color-accent-secondary);
-            margin-bottom: var(--space-lg);
-            font-weight: 500;
-        }
-
-        /* H3 styling for section eyebrows */
-        h3 {
-            font-size: var(--font-size-body-lg);
-            letter-spacing: var(--letter-spacing-normal);
-            color: var(--color-accent-secondary);
-            margin-bottom: var(--space-lg);
-            font-weight: 500;
-        }
-
-        .split-feature-left p {
-            font-size: var(--font-size-body-md); /* Większy, wyrazisty tekst po lewej */
-            line-height: 1.65;
-            color: var(--color-white-muted);
-            font-weight: 300;
-            letter-spacing: var(--letter-spacing-loose);
-        }
-
-        .split-feature-right .intro-text {
-            font-size: var(--font-size-body-lg);
-            line-height: 1.65;
-            color: var(--color-white-pure);
-            margin-bottom: var(--space-xl);
-            font-weight: 300;
-            letter-spacing: var(--letter-spacing-body);
-        }
-
-        .split-feature-list {
-            border-left: 1px solid rgba(255, 255, 255, 0.12); /* Charakterystyczna pionowa linia */
-            padding-left: var(--space-md); /* 21px wcięcia dla zawartości */
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-xl); /* Odstępy między blokami listy */
-        }
-
-        .split-feature-item h3 {
-            font-size: 19px;
-            font-weight: 400;
-            color: var(--color-white-pure);
-            margin-bottom: var(--space-xs);
-            letter-spacing: var(--letter-spacing-tight);
-        }
-
-        .split-feature-item p {
-            font-size: 16px;
-            color: var(--color-gray-light);
-            line-height: 1.6;
-            font-weight: 300;
-            letter-spacing: var(--letter-spacing-loose);
-        }
-
-        /* RWD dla układu dwukolumnowego */
-        @media (max-width: 820px) {
-            .split-feature-section {
-                grid-template-columns: 1fr;
-                gap: var(--space-xl);
-                padding: var(--space-xl) 0;
-            }
-            
-            .split-feature-left {
-                margin-bottom: var(--space-md);
-            }
-            
-            .split-feature-list {
-                gap: var(--space-lg);
-            }
-        }
-        
-        /* ===== TABS COMPONENT ===== */
-        .tabs-container {
-            margin-top: var(--space-xxl);
-            margin-bottom: var(--space-xxl);
-            padding-bottom: var(--space-xxl);
-            border-bottom: 1px solid var(--color-border);
-        }
-
-        .tabs-header {
-            display: flex;
-            gap: var(--space-lg);
-            margin-bottom: var(--space-xl);
-            padding-bottom: 0;
-        }
-
-        .tab-button {
-            background: none;
-            border: none;
-            color: var(--color-accent-primary);
-            font-size: 21px;
-            font-weight: 500;
-            cursor: pointer;
-            padding: 0;
-            letter-spacing: var(--letter-spacing-normal);
-             font-family: var(--font-family);
-            transition: color 0.2s ease;
-            position: relative;
-        }
-
-        .tab-button:hover {
-            color: var(--color-white-pure);
-        }
-
-        .tab-button.active {
-            color: var(--color-white-pure);
-            font-weight: 600;
-        }
-
-        .tab-button.active::after {
-            content: '';
-            position: absolute;
-            bottom: -13px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background-color: var(--color-accent-primary);
-        }
-
-        .tab-panel {
-            display: none;
-        }
-
-        .tab-panel.active {
-            display: block;
-            animation: fadeIn 0.2s ease;
-        }
-
-        .tab-panel p {
-            font-size: var(--font-size-body-md);
-            font-weight: 300;
-            line-height: var(--line-height-body);
-            margin-bottom: var(--space-md);
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        /* RWD - Tabs na mobile */
-        @media (max-width: 820px) {
-            .tabs-header {
-                gap: var(--space-md);
-            }
-        }
-
-        /* ===== SECTION DIVIDERS ===== */
-        /* Dla kogo */
-        #dla-kogo {
-            border-bottom: 1px solid var(--color-border);
-            padding-bottom: var(--space-xxl);
-        }
-
-        /* Wyróżniki */
-        #wyrozniki {
-            border-bottom: 1px solid var(--color-border);
-        }
-
-        /* Metodologia & Jak to działa */
-        #jak-dziala {
-            border-bottom: 1px solid var(--color-border);
-        }
-
-        /* Szczegóły sesji */
-        .split-feature-section:not([id]) {
-            border-bottom: 1px solid var(--color-border);
-            padding-top: calc(var(--space-xxl) * 0.8); /* Zmniejszone o 20% */
-        }
-
-        /* Kontakt */
-        #kontakt {
-            border-bottom: 1px solid var(--color-border);
-        }
-
-        /* Sesja info (O mnie) */
-        #sesja-info {
-            border-bottom: 1px solid var(--color-border);
-        }
-
-        /* ===== ACCORDION COMPONENT ===== */
-        .accordion-container {
-            padding-top: 32px;
-            padding-bottom: var(--space-lg);
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-lg);
-        }
-
-        .accordion-item {
-            
-            border: 1px solid rgba(140, 139, 139, 0.04);
-            border-radius: 12px;
-            overflow: hidden;
-            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .accordion-item:hover {
-            background-color: rgba(255, 255, 255, 0.04);
-            border-color:  rgb(175, 144, 116, 0.5);
-        }
-
-        .accordion-header {
-            width: 100%;
-            padding: var(--space-lg);
-            background: transparent;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 1rem;
-            font-weight: 500;
-            text-align: left;
-            transition: opacity 0.2s ease;
-            color: var(--color-white-pure);
-            border: none;
-        }
-
-        .accordion-header:hover {
-            opacity: 0.7;
-        }
-
-        .accordion-title {
-            flex: 1;
-            
-        }
-
-        .accordion-title p {
-            font-size: var(--font-size-body-md);
-        }
-
-        .accordion-icon {
-            margin-left: var(--space-sm);
-            font-size: 1.25rem;
-            transition: transform 0.3s ease;
-            min-width: 24px;
-            text-align: right;
-        }
-
-        .accordion-header[aria-expanded="true"] .accordion-icon {
-            transform: rotate(45deg);
-        }
-
-        .accordion-content {
-    overflow: hidden;
-    max-height: 0;
-    transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1), padding 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    
-}
-
-.accordion-header[aria-expanded="true"] + .accordion-content {
-    max-height: 600px;
-    padding: 0 var(--space-lg) var(--space-lg);
-}
-
-.accordion-icon {
-    margin-left: var(--space-sm);
-    font-size: 1.25rem;
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    min-width: 24px;
-    text-align: right;
-}
-
-        .accordion-body {
-            line-height: 1.6;
-            color: var(--color-text, inherit);
-            font-size: var(--font-size-body-md);
-            font-weight: 300;
-            letter-spacing: var(--letter-spacing-loose);
-        }
-
-        .accordion-content {
-    overflow: hidden;
-    max-height: 0;
-    transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1), padding 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    
-    padding: 0 var(--space-lg) 0;
-}
-
-.accordion-header[aria-expanded="true"] + .accordion-content {
-    max-height: 600px;
-    padding: 0 var(--space-lg) var(--space-lg);
-}
-
-        /* ===== COPYRIGHT FOOTER ===== */
-        .copyright-footer {
-            text-align: center;
-            font-size: var(--font-size-body-sm);
-            color: var(--color-gray-dark);
-            letter-spacing: var(--letter-spacing-loose);
-            margin-top: var(--space-xxl);
-            padding-bottom: var(--space-lg);
-        }
-    </style>
-    <script src="https://cdn.jsdelivr.net/npm/@darkroom/lenis@latest"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Second Thought — think twice. act once.</title>
+  <meta name="description" content="Second Thought — druga perspektywa, właściwe pytania i sprawdzone podstawy dla liderów, założycieli i menedżerów.">
+  <meta name="theme-color" content="#fafafa">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@500;700;800&family=Lora:wght@400;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
-    <!-- HEADER (Miejsce startowe dla języka) -->
-    <header class="header">
-        <span class="language-toggle-text" id="lang-switcher">PL | EN</span>
+
+  <!-- =====================================================
+       WELCOME SCREEN
+       ===================================================== -->
+  <main class="welcome view" id="welcome">
+    <div class="grid-lines" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+
+    <div class="welcome__top">
+      <div class="brand welcome__brand">
+        <span class="brand__name">Second thought</span>
+        <span class="brand__mark" aria-hidden="true"><span></span><span></span></span>
+      </div>
+      <div class="lang welcome__lang" role="group" aria-label="Język">
+        <button type="button" aria-pressed="true">PL</button> | <button type="button" aria-pressed="false">EN</button>
+      </div>
+    </div>
+
+    <div class="welcome__main">
+      <div class="letter-grid" id="letter-grid" aria-hidden="true">
+        <span>R</span><span>A</span><span>C</span><span>E</span><span>M</span><span>P</span><span>X</span>
+        <span>R</span><span>T</span><span>C</span><span>E</span><span>M</span><span>Z</span><span>K</span>
+        <span>S</span><span>E</span><span>K</span><span>B</span><span>N</span><span>D</span><span>D</span>
+        <span class="is-key is-bold">&gt;</span><span class="is-key">S</span><span class="is-key">E</span><span class="is-key">C</span><span class="is-key">O</span><span class="is-key">N</span><span class="is-key">D</span>
+        <span class="is-key is-bold">T</span><span class="is-key">H</span><span class="is-key">O</span><span class="is-key">U</span><span class="is-key">G</span><span class="is-key">H</span><span class="is-key">T</span>
+        <span>E</span><span>N</span><span>K</span><span>Y</span><span>F</span><span>H</span><span>L</span>
+      </div>
+      <div class="tagline">
+        <h1 class="tagline__title">think twice.<br>act once.</h1>
+        <p class="tagline__sub">Czasami nie potrzebujesz porady.<br>Potrzebujesz innego spojrzenia.</p>
+      </div>
+    </div>
+
+    <form class="code-form" id="code-form" autocomplete="off" novalidate>
+      <label class="code-form__label" for="access-code">Wpisz swój unikalny kod*</label>
+      <input class="code-form__input" id="access-code" name="code" type="text" placeholder="np. 45GH67WW" maxlength="16" spellcheck="false">
+      <button class="btn btn--sm" type="submit">Wejdź</button>
+      <p class="code-form__note">*Kod jest ważny 72h od jego pierwszego użycia.</p>
+    </form>
+  </main>
+
+  <!-- =====================================================
+       ONE PAGER
+       ===================================================== -->
+  <div id="onepager" hidden>
+    <header class="nav" id="nav">
+      <div class="nav__inner">
+        <a href="#top" class="brand" aria-label="Second Thought — na górę strony">
+          <span class="brand__name">Second thought</span>
+          <span class="brand__mark" aria-hidden="true"><span></span><span></span></span>
+        </a>
+        <nav aria-label="Główna nawigacja">
+          <ul class="nav__links" id="nav-links">
+            <li><a href="#czemu">CZEMU</a></li>
+            <li><a href="#filozofia">FILOZOFIA</a></li>
+            <li><a href="#dla-kogo">DLA KOGO &amp; JAK</a></li>
+            <li><a href="#kontakt">KONTAKT</a></li>
+          </ul>
+        </nav>
+        <div class="nav__right">
+          <div class="nav__lang" role="group" aria-label="Język">
+            <button type="button" aria-pressed="true">PL</button> | <button type="button" aria-pressed="false">EN</button>
+          </div>
+          <button class="nav__toggle" type="button" aria-controls="nav-links" aria-expanded="false" aria-label="Menu">
+            <span></span><span></span>
+          </button>
+        </div>
+      </div>
     </header>
 
-    <main>
-        <!-- WELCOME SECTION -->
-        <section id="welcome-section">
-            <div class="welcome-content">
-                <h1>Second Thought.</h1>
-                
-                <p class="welcome-intro-light">
-                    
-                    Czasami nie potrzebujesz porady. Potrzebujesz innego spojrzenia.<br>
-                    Jesteś tutaj, ponieważ moja usługa została doceniona i polecona Tobie jako wartościowe narzędzie.
-                </p>
-                 <p class="welcome-intro-light">
-                    
-                </p>
+    <main class="page view" id="top">
+      <div class="grid-lines" aria-hidden="true"><span></span><span></span><span></span></div>
 
-                <p class="welcome-instruction">
-                    Uzyskaj dostęp, wpisując swój unikalny kod
-                </p>
+      <!-- Hero -->
+      <section class="hero" aria-labelledby="hero-title">
+        <h1 class="hero__title" id="hero-title">think twice.<br>act once.</h1>
+        <p class="hero__pron">[ˈsek.ənd θɔːt] <span>second thought</span></p>
+        <p class="hero__lead">Druga perspektywa, właściwe pytania i sprawdzone podstawy — dla liderów, założycieli i menedżerów, którzy chcą rozwiązywać właściwe problemy, podejmować lepiej przemyślane decyzje i budować zespoły, które po prostu działają.</p>
+        <p class="hero__note">Bez przejmowania Twojej pracy i bez robienia czegokolwiek za Ciebie.</p>
+        <div class="hero__actions">
+          <a class="btn" href="#kontakt">Umów bezpłatną rozmowę wstępną</a>
+        </div>
+      </section>
 
-                <div class="code-section">
-                    <div class="code-input-container">
-                        <input 
-                            type="text" 
-                            id="code-input" 
-                            class="code-input" 
-                            placeholder="np. 5647DD23"
-                            maxlength="8"
-                            autocomplete="off"
-                        >
-                    </div>
-                    <button type="button" class="code-button" id="submit-btn">
-                        Wejdź
-                    </button>
-                    <div id="code-message"></div>
-                </div>
+      <!-- Problem -->
+      <section class="problem" id="czemu" aria-labelledby="problem-title">
+        <div class="problem__intro">
+          <h2 class="section-title problem__title" id="problem-title">problem wraca, bo leczysz objaw</h2>
+          <p class="problem__text">W codziennym pędzie najłatwiej skupić się na objawach: kolejne spotkanie, kolejny proces, kolejna zmiana w strukturze. Problem wraca w nowej formie, bo nikt nie zatrzymał się, żeby zapytać, co jest jego prawdziwym źródłem.</p>
+        </div>
 
-                <p class="code-validity">
-                    Kod jest ważny 72h od jego pierwszego użycia.
-                </p>
+        <div class="diagnosis">
+          <div class="diagnosis__head" aria-hidden="true">
+            <span>Objaw</span>
+            <span>Co może za nim stać</span>
+          </div>
+          <div class="diagnosis__row">
+            <p class="diagnosis__symptom">„Zespół nie dowozi na czas”</p>
+            <img class="diagnosis__arrow" src="assets/icons/arrow-right.svg" alt="">
+            <p class="diagnosis__cause">Niejasny podział odpowiedzialności</p>
+          </div>
+          <div class="diagnosis__row">
+            <p class="diagnosis__symptom">„Ludzie się nie komunikują”</p>
+            <img class="diagnosis__arrow" src="assets/icons/arrow-right.svg" alt="">
+            <p class="diagnosis__cause">Brak zaufania</p>
+          </div>
+          <div class="diagnosis__row">
+            <p class="diagnosis__symptom">„Mamy za dużo spotkań”</p>
+            <img class="diagnosis__arrow" src="assets/icons/arrow-right.svg" alt="">
+            <p class="diagnosis__cause">Brak decyzyjności</p>
+          </div>
+          <p class="diagnosis__punch">Second Thought daje chwilę zatrzymania — i kogoś, z kim można ją dobrze wykorzystać.</p>
+        </div>
+      </section>
+
+      <!-- Philosophy -->
+      <section class="philosophy" id="filozofia" aria-labelledby="philosophy-title">
+        <div class="philosophy__inner">
+          <div class="philosophy__head">
+            <h2 class="philosophy__title" id="philosophy-title">jedna filozofia,<br>trzy formy wsparcia</h2>
+            <p class="philosophy__text">Najlepsze rozwiązania powstają, gdy zatrzymasz się na chwilę, spojrzysz na sytuację z drugiej perspektywy i wrócisz do podstaw.</p>
+          </div>
+
+          <div class="cards">
+            <button class="card card--featured" type="button" data-modal-open="modal-sparring" aria-haspopup="dialog">
+              <span class="card__top">
+                <img class="card__icon" src="assets/icons/arrows-minimize.svg" alt="">
+                <span class="card__eyebrow">Problem już się dzieje</span>
+                <span class="card__title">sparring menedżerski</span>
+              </span>
+              <span class="card__desc">Od objawu do prawdziwej przyczyny — i do rozwiązania.</span>
+            </button>
+
+            <button class="card" type="button" data-modal-open="modal-thinking" aria-haspopup="dialog">
+              <span class="card__top">
+                <span class="card__eyebrow">Decyzja tu i teraz</span>
+                <span class="card__title">thinking partner</span>
+              </span>
+              <span class="card__desc">Sparing przy analizach i decyzjach, zanim pójdą w świat.</span>
+            </button>
+
+            <button class="card" type="button" data-modal-open="modal-basics" aria-haspopup="dialog">
+              <span class="card__top">
+                <span class="card__eyebrow">Zanim problemy się pojawią</span>
+                <span class="card__title">basics of coexistence</span>
+                <span class="card__status">- W przygotowaniu -</span>
+              </span>
+              <span class="card__desc">Manual podstawowych zasad współpracy na zdrową kulturę zespołu od pierwszego dnia.</span>
+            </button>
+          </div>
+
+          <p class="philosophy__foot">Każdą formę można wybrać osobno albo połączyć — zależnie od etapu, na którym jest Twoja firma.</p>
+        </div>
+      </section>
+
+      <!-- Audience -->
+      <section class="audience" id="dla-kogo" aria-labelledby="audience-title">
+        <div class="audience__inner">
+          <div class="audience__left">
+            <h2 class="section-title audience__title" id="audience-title">dla kogo<br>&amp; jak</h2>
+            <ul class="audience__list">
+              <li><strong>założyciele startupów i małych firm</strong><span>także ci, którzy dopiero budują zespół.</span></li>
+              <li><strong>menedżerowie i team leaderzy</strong><span>zwłaszcza ci, którzy właśnie objęli zespół.</span></li>
+              <!-- TODO: brak opisu w projekcie Figma (tam: "?????") -->
+              <li><strong>członkowie zarządów.</strong><span>?????</span></li>
+              <li><strong>właściciele firm w fazie wzrostu lub zmiany</strong><span>także organizacje, które czują, że „kiedyś było lepiej”, i chcą wrócić do podstaw.</span></li>
+            </ul>
+          </div>
+
+          <div class="accordion" id="accordion">
+            <div class="accordion__item is-open">
+              <button class="accordion__trigger" type="button" aria-expanded="true" aria-controls="acc-1" id="acc-1-btn">
+                z Tobą, nie za Ciebie<span class="accordion__icon" aria-hidden="true"></span>
+              </button>
+              <div class="accordion__panel" id="acc-1" role="region" aria-labelledby="acc-1-btn">
+                <div><p>rozwiązania i decyzje zostają Twoje, a razem z nimi kompetencje.</p></div>
+              </div>
             </div>
-        </section>
-
-        <!-- ACCESS SECTION -->
-        <section id="access-section">
-            <!-- FLOATING PREMIUM NAVBAR -->
-            <nav class="premium-navbar">
-                <div class="nav-logo">SecondT</div>
-                
-                <!-- Ikona Burger Menu -->
-                <div class="burger-menu" id="burger-btn">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="3" y1="12" x2="21" y2="12"></line>
-                        <line x1="3" y1="6" x2="21" y2="6"></line>
-                        <line x1="3" y1="18" x2="21" y2="18"></line>
-                    </svg>
-                </div>
-
-                <div class="nav-links" id="nav-links">
-                    <a href="#dla-kogo" title="Dla kogo">Dla kogo</a>
-                    <a href="#wyrozniki" title="Co wyróżnia ST">Co wyróżnia ST</a>
-                    <a href="#jak-dziala" title="Jak to działa">Jak to działa</a>
-                    <a href="#cena-rezerwacja" title="Sesja info">Sesja</a>
-                    <a href="#kontakt" title="Kontakt">Kontakt</a>
-                </div>
-            </nav>
-
-            <div class="content-section">
-                <h2>
-                    Second Thought to poufna sesja analityczna, której celem jest pomoc
-                    w przełamaniu mentalnego szumu, podważeniu założeń i spojrzeniu na swoją sytuację z większą jasnością.
-                </h2>
-               
-                <p>
-                    To drugi umysł — w momencie gdy Twój własny jest zbyt blisko, zbyt głośny 
-                    albo zbyt splątany żeby poruszać się jasno do przodu.
-                </p>
+            <!-- TODO: treści rozwinięć poniżej są tymczasowe — w Figmie brak treści dla tych pozycji -->
+            <div class="accordion__item">
+              <button class="accordion__trigger" type="button" aria-expanded="false" aria-controls="acc-2" id="acc-2-btn">
+                najpierw: co naprawdę jest problemem?<span class="accordion__icon" aria-hidden="true"></span>
+              </button>
+              <div class="accordion__panel" id="acc-2" role="region" aria-labelledby="acc-2-btn">
+                <div><p>zanim pojawią się rozwiązania, oddzielamy objawy od przyczyn i fakty od interpretacji.</p></div>
+              </div>
             </div>
-
-            <!-- ===== DLA KOGO JEST TA USŁUGA (PREMIUM BENTO GRID 2x2) ===== -->
-            <div class="capabilities-container" id="dla-kogo">
-                <h3 class="split-feature-eyebrow">Moja metoda sprawdzi się dla</h3>
-                
-                <div class="capabilities-grid">
-                    <!-- Card 01 -->
-                    <div class="cap-card">
-                        
-                        <h4>Przedsiębiorców lub menedżerów</h4>
-                        <p>chcesz poddać w wątpliwość utarte schematy, zachowania lub założenia</p>
-                    </div>
-
-                    <!-- Card 02 -->
-                    <div class="cap-card">
-                        
-                        <h4>Twórców lub profesjonalistów</h4>
-                        <p>potrzebujesz uporządkować złożone myśli lub potrzebujesz szerszej, przemyślanej opinii</p>
-                    </div>
-
-                    <!-- Card 03 -->
-                    <div class="cap-card">
-                        
-                        <h4>Niezależnych myślicieli</h4>
-                        <p>zmagasz się z nadmiernym analizowaniem lub paraliżem decyzyjnym</p>
-                    </div>
-
-                    <!-- Card 04 -->
-                    <div class="cap-card">
-                        
-                        <h4>Osób w obliczu niepewności i zmian</h4>
-                        <p>czujesz się zagubiony/a między różnymi opcjami lub decyzjami, potrzebujesz świeżego spojrzenia na sytuację</p>
-                    </div>
-                </div>
+            <div class="accordion__item">
+              <button class="accordion__trigger" type="button" aria-expanded="false" aria-controls="acc-3" id="acc-3-btn">
+                powrót do podstaw<span class="accordion__icon" aria-hidden="true"></span>
+              </button>
+              <div class="accordion__panel" id="acc-3" role="region" aria-labelledby="acc-3-btn">
+                <div><p>większość problemów nie wynika z braku zaawansowanych narzędzi, tylko z zapominania o rzeczach najprostszych.</p></div>
+              </div>
             </div>
-
-            <!-- ===== WYRÓŻNIKI ===== -->
-            <div class="content-section split-feature-section" id="wyrozniki">
-                <div class="split-feature-left">
-                    <h3 class="split-feature-eyebrow">Co wyróżnia Second Thought</h3>
-                    <p>
-                        Większość ludzi nie potrzebuje kolejnych opinii. Potrzebują kogoś, kto potrafi zadawać właściwe pytania.
-            Second Thought oferuje spokojną, uporządkowaną, zewnętrzną perspektywę, wolną od emocjonalnych uprzedzeń, 
-            oczekiwań czy ukrytych motywów. 
-                    </p>
-                    <p>
-                        Poprzez bezpośrednią rozmowę i analityczne pytania rozkładamy sytuacje 
-            na czynniki pierwsze, aby dotrzeć do tego, co naprawdę ma znaczenie.
-                    </p>
-                    <p>Czasami rezultatem jest przełom. Czasami jest to zmiana perspektywy. Czasami jest to po prostu pierwszy głęboki oddech 
-                        po mentalnym chaosie. Tak czy inaczej, sesja wywołuje ruch.</p>
-                </div>
-                <div class="split-feature-right">
-                    <h3 class="split-feature-eyebrow">Razem możemy zidentyfikować</h3>
-                   
-                    
-                    <div class="split-feature-list">
-                        <div class="split-feature-item">
-                            <h3>Blokady</h3>
-                            <p>co naprawdę blokuje Twój proces decyzyjny</p>
-                        </div>
-                        <div class="split-feature-item">
-                            <h3>Kierunek</h3>
-                            <p>gdzie Twoje myślenie może zataczać koło</p>
-                        </div>
-                        <div class="split-feature-item">
-                            <h3>Założenia</h3>
-                            <p>jakie założenia kształtują Twoje wybory</p>
-                        </div>
-                        <div class="split-feature-item">
-                            <h3>Niewidoczne</h3>
-                            <p>oraz jakie możliwości mogą być dla Ciebie jeszcze niewidoczne</p>
-                        </div>
-                    </div>
-                </div>
+            <div class="accordion__item">
+              <button class="accordion__trigger" type="button" aria-expanded="false" aria-controls="acc-4" id="acc-4-btn">
+                zewnętrzna perspektywa<span class="accordion__icon" aria-hidden="true"></span>
+              </button>
+              <div class="accordion__panel" id="acc-4" role="region" aria-labelledby="acc-4-btn">
+                <div><p>ktoś spoza Twojej organizacji — bez uwikłania i bez interesu w konkretnym rozstrzygnięciu.</p></div>
+              </div>
             </div>
-
-            <!-- ===== FILTRY METODOLOGICZNE & JAK TO DZIAŁA ===== -->
-            <div class="content-section" >
-                <h3 class="split-feature-eyebrow">Filtry metodologiczne Second Thought</h3>
-                
-                <p class="intro-text">
-                    Pytania, które usłyszysz podczas sesji, będą na bazie narzędzi analitycznych — nie poczujesz tego bo rozmowa jest bardzo naturalna. Przeprowadzimy Twoje wyzwanie przez takie filary jak:
-                </p>
-
-                <div class="methodology-grid">
-                    <!-- Metodologia 01 -->
-                    <div class="cap-card">
-  <div class="cap-num">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" stroke-width="1.5" stroke="var(--color-accent-secondary)" width="20" height="20">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M9 9V4.5M9 9H4.5M9 9 3.75 3.75M9 15v4.5M9 15H4.5M9 15l-5.25 5.25M15 9h4.5M15 9V4.5M15 9l5.25-5.25M15 15h4.5M15 15v4.5m0-4.5 5.25 5.25" />
-    </svg>
-  </div>
-                    
-  <h4>Głębokie źródło problemu</h4>
-  <p><strong>5 Why / Ishikawa</strong></p>
-  <p>Rozbijamy skomplikowane sytuacje biznesowe i osobiste za pomocą matrycy przyczynowo-skutkowej. Docieramy do pierwotnego ogniwa, którego zmiana automatycznie naprawia całą resztę procesu.</p>
-</div>
-
-
-                    <!-- Metodologia 02 -->
-                    
-<div class="cap-card">
-  <div class="cap-num">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="var(--color-accent-secondary)" width="20" height="20">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M9 4.5v15m6-15v15m-10.875 0h15.75c.621 0 1.125-.504 1.125-1.125V5.625c0-.621-.504-1.125-1.125-1.125H4.125C3.504 4.5 3 5.004 3 5.625v12.75c0 .621.504 1.125 1.125 1.125Z" />
-    </svg>
-  </div>
-  <h4>Matryca odporności na błędy</h4>
-  <p><strong>FMEA</strong></p>
-  <p>Poddajemy Twoją decyzję lub nowe przedsięwzięcie testowi warunków skrajnych. Narzędzie FMEA pomaga oszacować ryzyko i zabezpieczyć Cię przed potknięciem tam, gdzie inni działają po omacku.</p>
-</div>
-
-                    <!-- Metodologia 03 -->
-                    <div class="cap-card">
-  <div class="cap-num">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="var(--color-accent-secondary)" width="20" height="20">
-      <path stroke-linecap="round" stroke-linejoin="round" d="m15.75 15.75-2.489-2.489m0 0a3.375 3.375 0 1 0-4.773-4.773 3.375 3.375 0 0 0 4.774 4.774ZM21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-    </svg>
-  </div>
-  <h4>Audyt Celowości</h4>
-  <p><strong>Weryfikacja & Walidacja</strong></p>
-  <p>Zanim zainwestujesz zasoby, upewniamy się, czy Twoje plany są wewnętrznie spójne i oparte na danych oraz czy ich realizacja rzeczywiście może rozwiązać problem czy wyzwanie, z którym się mierzysz.</p>
-</div>
-
-                    <!-- Metodologia 04 -->
-                    <div class="cap-card">
-  <div class="cap-num">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="var(--color-accent-secondary)" width="20" height="20">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M15 13.5H9m4.06-7.19-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z" />
-    </svg>
-  </div>
-  <h4>Odchudzanie codziennej rutyny</h4>
-  <p><strong>Process Optimization</strong></p>
-  <p>Analizujemy architekturę Twoich nawyków i procesów operacyjnych. Wyznaczamy do eliminacji z Twojego otoczenia i harmonogramu tarcia oraz przeszkody, uwalniający zasoby do kluczowych działań.</p>
-</div>
-                </div>
+            <div class="accordion__item">
+              <button class="accordion__trigger" type="button" aria-expanded="false" aria-controls="acc-5" id="acc-5-btn">
+                konkret<span class="accordion__icon" aria-hidden="true"></span>
+              </button>
+              <div class="accordion__panel" id="acc-5" role="region" aria-labelledby="acc-5-btn">
+                <div><p>wspólna praca na Twoich konkretnych przypadkach, a nie teoria zarządzania.</p></div>
+              </div>
             </div>
+          </div>
+        </div>
+      </section>
 
-            <!-- ===== SZCZEGÓŁY SESJI ===== -->
-            <div class="content-section split-feature-section" id="jak-dziala">
-                <div class="split-feature-right">
-                    <h3 class="split-feature-eyebrow">Jak to działa</h3>
-                    <p class="intro-text">
-                        Szczegóły sesji
-                    </p>
-                    
-                    <div class="split-feature-list">
-                        <div class="split-feature-item">
-                            <h3>Czas trwania</h3>
-                            <p>do 90 minut</p>
-                        </div>
-                        <div class="split-feature-item">
-                            <h3>Format</h3>
-                            <p>online lub osobiście (w zależności od lokalizacji)</p>
-                        </div>
-                        <div class="split-feature-item">
-                            <h3>Częstotliwość</h3>
-                            <p>sesja jednorazowa lub bieżące konsultacje w razie potrzeby</p>
-                        </div>
-                        <div class="split-feature-item">
-                            <h3>Limit</h3>
-                            <p>maksymalnie 3 sesje na temat, aby zachować przejrzystość i skuteczność</p>
-                        </div>
-                    </div>
-                </div>
-              <div class="accordion-container">
-  <div class="accordion-item">
-    <button class="accordion-header" aria-expanded="false">
-      <span class="accordion-title">Partnerstwo, a nie wykład</span>
-      <span class="accordion-icon">+</span>
-    </button>
-    <div class="accordion-content" >
-      <div class="accordion-body">
-        Rozmawiamy jak równy z równym. Ty przedstawiasz swoją sytuację, a ja wnoszę dystans, obiektywizm i analityczną strukturę.
-      </div>
-    </div>
-  </div>
+      <!-- Final CTA -->
+      <section class="cta" id="kontakt" aria-labelledby="cta-title">
+        <h2 class="cta__title" id="cta-title">gotowy, gotowa?</h2>
+        <p class="cta__text">Masz temat, który nie daje Ci spokoju, decyzję do przegadania albo zespół, który dopiero budujesz? Bezpłatna rozmowa wstępna pomoże wybrać formę wsparcia najlepszą dla Ciebie.</p>
+        <a class="btn btn--light" href="mailto:secondthought.msa@gmail.com?subject=Bezp%C5%82atna%20rozmowa%20wst%C4%99pna">Umów bezpłatną rozmowę wstępną</a>
+        <button class="cta__link" type="button" data-modal-open="modal-basics" data-focus="signup-email">Czekasz na Basics of Coexistence? Zostaw kontakt →</button>
+      </section>
 
-  <div class="accordion-item">
-    <button class="accordion-header" aria-expanded="false">
-      <span class="accordion-title"><strong>Bezpośrednio, ale konstruktywnie</strong></span>
-      <span class="accordion-icon">+</span>
-    </button>
-    <div class="accordion-content" >
-      <div class="accordion-body">
-        To szczera rozmowa. Nie powiem Ci tego, co chcesz usłyszeć — pomogę Ci zbadać, co faktycznie jest prawdą.
-      </div>
-    </div>
-  </div>
-
-  <div class="accordion-item">
-    <button class="accordion-header" aria-expanded="false">
-      <span class="accordion-title"><strong>Całkowicie poufne</strong></span>
-      <span class="accordion-icon">+</span>
-    </button>
-    <div class="accordion-content" >
-      <div class="accordion-body">
-        Każda rozmowa pozostaje prywatna i dyskretna.
-      </div>
-    </div>
-  </div>
-
-  <div class="accordion-item">
-    <button class="accordion-header" aria-expanded="false">
-      <span class="accordion-title"><strong>Brak schematu</strong></span>
-      <span class="accordion-icon">+</span>
-    </button>
-    <div class="accordion-content" >
-      <div class="accordion-body">
-        Żadnych ogólnych schematów. Żadnych scenariuszy. Żadnych formuł. Żadnych motywacyjnych frazesów. Każda sesja jest w całości dostosowana do Ciebie i Twojej sytuacji.
-      </div>
-    </div>
-  </div>
-
-  <div class="accordion-item">
-    <button class="accordion-header" aria-expanded="false">
-      <span class="accordion-title"><strong>Efekty</strong></span>
-      <span class="accordion-icon">+</span>
-    </button>
-    <div class="accordion-content" >
-      <div class="accordion-body">
-        Może to być przełom w sposobie myślenia, nagłe rozjaśnienie sprawy albo… uświadomienie sobie, że musisz szukać dalej. Nie gwarantuję "magicznego rozwiązania".
-      </div>
-    </div>
-  </div>
-</div>
-            </div>
-
-            <div class="tabs-container" id="cena-rezerwacja">
-                <div class="tabs-header">
-                    <button class="tab-button active" data-tab="tab-price">Cena</button>
-                    <button class="tab-button" data-tab="tab-booking">Zarezerwuj sesję</button>
-                </div>
-
-                <div class="tabs-content">
-                    <!-- TAB: Cena -->
-                    <div id="tab-price" class="tab-panel active">
-                        
-                        <h3><strong>Sesja: 400 PLN</strong></h3>
-                        <p>
-                            100 PLN* przez Blik (na wskazany numer poniżej) przy rezerwacji (depozyt gwarantujący miejsce).<br>
-                            Jeśli nie dojedziesz, nie pojawisz się, depozyt zostaje utracony.
-                        </p>
-                        <p>
-                            300 PLN* przez Blik (na wskazany numer poniżej) w ciągu 48 godzin po zakończeniu sesji.
-                        </p>
-                        <p style="font-size: small; letter-spacing: var(--letter-spacing-loose)">
-                            *Rezerwując sesję zgadzasz się na powyższe warunki.
-                        </p>
-                    </div>
-
-                    <!-- TAB: Zarezerwuj sesję -->
-                    <div id="tab-booking" class="tab-panel">
-                        <div class="split-feature-eyebrow">Zarezerwuj sesję</div>
-                        <p>Kliknij poniżej aby wybrać dogodny dla siebie termin</p>
-                        <!-- Calendly inline widget begin -->
-<div class="calendly-inline-widget" data-url="https://calendly.com/secondthought-msa/90min?hide_event_type_details=1&hide_gdpr_banner=1&background_color=0f1a35&text_color=f2f2f2&primary_color=d0c4aa" style="min-width:320px;height:700px;"></div>
-<script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
-<!-- Calendly inline widget end -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- ===== KONTAKT ===== -->
-
-             <div class="content-section" id="kontakt">
-                <h3 class="split-feature-eyebrow">Kontakt</h3>
-                <p>
-                    <strong>WhatsApp/Blik:</strong> +48 572 719 203<br>
-                    <strong>Email:</strong> secondthought.msa@gmail.com
-                </p>
-            </div>
-
-           <!-- ===== SESJA INFO (O MNIE) ===== -->
-
-            <div class="content-section">
-                <h3 class="split-feature-eyebrow">Meet Your Guide Behind "Second Thought"</h3>
-                <p>
-                    <strong>Magdalena Stodulska</strong>
-                </p>
-                <p style="font-size: medium; letter-spacing: var(--letter-spacing-loose)">
-                    Z wykształcenia jestem magistrem inżynierem, dodatkowo ukończyłam studia z zakresu zarządzania projektami i zarządzania jakością.
-                    W ciągu ponad 15 lat pracy zawodowej, obejmujących obszary produkcji, IT oraz projektów naukowo-inżynierskich, stosowałam metodyki takie jak analiza 
-                    przyczyn źródłowych, 
-                    FMEA czy optymalizacja procesów — w celu diagnozowania i rozwiązywania problemów oraz wdrażania usprawnień.
-                </p>
-                <p style="font-size: medium; letter-spacing: var(--letter-spacing-loose)">Po drodze odkryłam coś nieoczekiwanego: to samo uporządkowane myślenie, które stabilizuje złożone przedsięwzięcia przemysłowe, może być przydatne w codziennych decyzjach, 
-wyzwaniach biznesowych czy osobistych. Zastosowane nawet tylko jako ramowe podejścia do problemów, trudności i wyborów, daje nam bardzo strukturalny, analityczny 
-i logiczny sposób radzenia sobie z codziennymi aspektami obecnymi w sferze zarządczo-organizacyjnej — zarówno w życiu zawodowym, jak i prywatnym.
-                </p>
-                <p style="font-size: medium; letter-spacing: var(--letter-spacing-loose)">To właśnie ta obserwacja stała się fundamentem Second Thought 
-                    — usługi zbudowanej na jednej prostej prawdzie: wszyscy jesteśmy systemami w ruchu. 
-                    Kiedy nasza ścieżka staje się powtarzalną pętlą, czasem wystarczy po prostu świeże spojrzenie, by ruszyć znowu naprzód.</p>
-            </div>
-
-            <div class="copyright-footer">
-                Copyright© Magdalena Stodulska SECOND THOUGHT 2026. All right reserved.
-            </div>
-
-           
-        </section>
+      <!-- Footer -->
+      <footer class="footer">
+        <div class="brand">
+          <span class="brand__name">Second Thought</span>
+          <span class="brand__mark" aria-hidden="true"><span></span><span></span></span>
+        </div>
+        <div class="footer__info">
+          <p>Second Thought. Think twice. Act once.</p>
+          <div class="footer__contact">
+            <a href="mailto:secondthought.msa@gmail.com">secondthought.msa@gmail.com</a>
+            <!-- TODO: numer telefonu z Figmy to placeholder -->
+            <a href="tel:+48000000000">+48 000 000 000</a>
+          </div>
+        </div>
+      </footer>
     </main>
 
-    <script>
-        // ===== LENIS SMOOTH SCROLL =====
-        window.addEventListener('load', () => {
-            if (typeof Lenis !== 'undefined') {
-                const lenis = new Lenis({
-                    lerp: 0.1,
-                    wheelMultiplier: 1,
-                    touchMultiplier: 2,
-                })
+    <!-- =====================================================
+         POP-UP: Sparring menedżerski
+         ===================================================== -->
+    <div class="modal" id="modal-sparring" role="dialog" aria-modal="true" aria-labelledby="modal-sparring-title">
+      <div class="modal__window">
+        <div class="modal__header">
+          <div class="brand">
+            <span class="brand__name">Second Thought</span>
+            <span class="brand__mark" aria-hidden="true"><span></span><span></span></span>
+          </div>
+          <div class="modal__controls">
+            <button type="button" data-modal-close aria-label="Zwiń okno"><img src="assets/icons/collapse.svg" alt=""></button>
+            <button type="button" data-modal-close aria-label="Zamknij"><img src="assets/icons/close.svg" alt=""></button>
+          </div>
+        </div>
+        <div class="modal__body">
+          <div class="m-stack">
+            <div class="m-intro">
+              <h2 class="m-title" id="modal-sparring-title">Sparring menedżerski</h2>
+              <p class="m-subtitle">Od objawu do prawdziwego problemu</p>
+              <p class="m-lead">Poufna przestrzeń do pracy nad Twoją codziennością menedżerską: sytuacjami w zespole, decyzjami, trudnymi rozmowami i własną rolą. Nie raport z rekomendacjami do szuflady — wspólna praca na Twoich konkretnych przypadkach.</p>
+            </div>
+            <p class="m-note">To nie jest doradztwo strategiczne — bez fuzji i przejęć, wejść na nowe rynki czy strategii rozwoju firmy. W centrum jest to, jak działa Twój zespół, jak przebiega współpraca i jak Ty działasz jako menedżer.</p>
+          </div>
 
-                function raf(time) {
-                    lenis.raf(time)
-                    requestAnimationFrame(raf)
-                }
+          <div class="m-stack">
+            <h3 class="m-h2">Jak to działa</h3>
+            <ol class="steps">
+              <li><span class="steps__num">01</span><h3>Konkretny przypadek</h3><p>sytuacja z pracy: napięcie w zespole, decyzja, rozmowa, która poszła nie tak, projekt, który nie idzie zgodnie z planem.</p></li>
+              <li><span class="steps__num">02</span><h3>Refleksja</h3><p>pytania pomagają oddzielić fakty od interpretacji, objawy od przyczyn i spojrzeć na sytuację oczami innych — także na własną rolę.</p></li>
+              <li><span class="steps__num">03</span><h3>Diagnoza</h3><p>dotarcie do sedna: ludzie, procesy, zasady, komunikacja, priorytety, a może własne nawyki.</p></li>
+              <li><span class="steps__num">04</span><h3>Kierunki działania</h3><p>kilka możliwych podejść wraz z kosztami i ryzykami. Wybór należy do Ciebie, bo to Ty najlepiej znasz swój kontekst.</p></li>
+              <li><span class="steps__num">05</span><h3>Powrót</h3><p>na kolejnej sesji: co zadziałało, co nie i czego to nauczyło.</p></li>
+            </ol>
+          </div>
 
-                requestAnimationFrame(raf)
-            }
-        })
+          <div class="m-benefits-block">
+            <h3 class="m-h2">Co zyskujesz</h3>
+            <ul class="benefits">
+              <li><img src="assets/icons/check.svg" alt="">Jasność, czym naprawdę się zajmujesz — zamiast walki z kolejnymi objawami.</li>
+              <li><img src="assets/icons/check.svg" alt="">Oszczędność czasu, pieniędzy i energii zespołu, które zwykle idą na niewłaściwe problemy.</li>
+              <li><img src="assets/icons/check.svg" alt="">Plan działania, który rozumiesz i za którym stoisz, bo wypracowałeś go sam.</li>
+              <li><img src="assets/icons/check.svg" alt="">Poufne miejsce do refleksji nad własnym stylem zarządzania, z dala od firmowej polityki.</li>
+              <li><img src="assets/icons/check.svg" alt="">Umiejętność samodzielnego diagnozowania podobnych sytuacji w przyszłości.</li>
+            </ul>
+          </div>
 
-        // ===== CONFIGURATION =====
-        const SPREADSHEET_ID = '1SXHXcvsVMnDLk6k94s9S0RSNTYMx8o_5TTjgFtm71nY';
-        const SERVICE_ACCOUNT_EMAIL = 'second-thought@secondthought-501318.iam.gserviceaccount.com';
+          <div class="m-stack">
+            <h3 class="m-h2">Typowe tematy</h3>
+            <div class="tiles tiles--2">
+              <div class="tile"><h3>Problemy z dowożeniem</h3><p>terminy się przesuwają, nie wiadomo, kto za co odpowiada, a „gotowe” znaczy dla każdego co innego.</p></div>
+              <div class="tile"><h3>Chaos w rosnącej firmie</h3><p>brak standardów pracy, onboardingu i zasad planowania albo procedury, których nikt nie stosuje.</p></div>
+              <div class="tile"><h3>Role i priorytety</h3><p>definicja ról, podział obowiązków, ustalanie priorytetów.</p></div>
+              <div class="tile"><h3>Projekty z wieloma stronami</h3><p>rozjeżdżające się oczekiwania zespołów, dostawców, partnerów czy instytucji, także międzynarodowo.</p></div>
+              <div class="tile"><h3>Powracające błędy i jakość</h3><p>te same kłopoty wracają mimo kolejnych „łat”, bo nikt nie dotarł do przyczyny.</p></div>
+              <div class="tile"><h3>Napięcia w zespole</h3><p>spadek zaufania, przemilczane konflikty, współpraca, która przestała działać.</p></div>
+              <div class="tile"><h3>Koszty i efektywność</h3><p>gdzie uciekają czas i pieniądze; jak uzgodnić KPI i sposób liczenia wyników.</p></div>
+              <div class="tile"><h3>Pierwsze miesiące w roli menedżera</h3><p>jak przejąć zespół, ustawić zasady i nie zgubić się w bieżączce.</p></div>
+            </div>
+          </div>
 
-        // ===== FUNCTIONS =====
-        function isTokenValid() {
-            const token = localStorage.getItem('access_token');
-            const expiresAt = localStorage.getItem('token_expires_at');
-            
-            if (!token || !expiresAt) {
-                return false;
-            }
+          <div class="m-next">
+            <a class="btn" href="mailto:secondthought.msa@gmail.com?subject=Sparring%20mened%C5%BCerski%20%E2%80%94%20rozmowa%20wst%C4%99pna">Umów bezpłatną rozmowę wstępną</a>
+          </div>
+        </div>
+      </div>
+    </div>
 
-            const now = new Date().getTime();
-            if (now > parseInt(expiresAt)) {
-                localStorage.removeItem('access_token');
-                localStorage.removeItem('token_expires_at');
-                return false;
-            }
+    <!-- =====================================================
+         POP-UP: Thinking Partner
+         ===================================================== -->
+    <div class="modal" id="modal-thinking" role="dialog" aria-modal="true" aria-labelledby="modal-thinking-title">
+      <div class="modal__window">
+        <div class="modal__header">
+          <div class="brand">
+            <span class="brand__name">Second Thought</span>
+            <span class="brand__mark" aria-hidden="true"><span></span><span></span></span>
+          </div>
+          <div class="modal__controls">
+            <button type="button" data-modal-close aria-label="Zwiń okno"><img src="assets/icons/collapse.svg" alt=""></button>
+            <button type="button" data-modal-close aria-label="Zamknij"><img src="assets/icons/close.svg" alt=""></button>
+          </div>
+        </div>
+        <div class="modal__body">
+          <div class="m-stack">
+            <div class="m-intro">
+              <h2 class="m-title" id="modal-thinking-title">Thinking Partner</h2>
+              <p class="m-subtitle">Sparing dla Twoich analiz i decyzji</p>
+              <p class="m-lead">Masz analizę, plan albo decyzję, którą chcesz omówić, zanim pójdzie dalej? Thinking Partner to rozmowa z kimś spoza Twojej organizacji — bez uwikłania i bez interesu w konkretnym rozstrzygnięciu — kto zada pytania, których nikt inny nie zada.</p>
+            </div>
+            <p class="m-text m-text--muted">Przy długiej pracy nad jednym tematem łatwo wpaść w koleiny: przyzwyczaić się do własnych założeń, przestać widzieć luki i odrzucać opcje niepasujące do pierwszej koncepcji. Współpracownicy rzadko powiedzą to wprost, a przełożonym nie zawsze chce się pokazywać niedokończoną myśl.</p>
+            <div class="m-callout">
+              <h3>To nie jest analiza robiona za Ciebie.</h3>
+              <p class="m-text">Analiza, wnioski i decyzja pozostają Twoje. Rola Thinking Partnera to druga głowa przy stole: słuchać, dopytywać, kwestionować i pomóc uporządkować myślenie. Efekt: mocniejsza analiza, którą rozumiesz i potrafisz obronić.</p>
+            </div>
+          </div>
 
-            return true;
-        }
+          <div class="m-stack">
+            <h3 class="m-h2">Co jest sprawdzane</h3>
+            <div class="tiles tiles--3">
+              <div class="tile"><img src="assets/icons/list-checks.svg" alt=""><h3>Kompletność</h3><p>ludzie, finanse, czas, ryzyka, interesariusze.</p></div>
+              <div class="tile"><img src="assets/icons/assumptions.svg" alt=""><h3>Założenia</h3><p>na czym opiera się rozumowanie i co, jeśli któreś okaże się błędne.</p></div>
+              <div class="tile"><img src="assets/icons/split.svg" alt=""><h3>Alternatywy</h3><p>czy rozważone zostały różne opcje, włącznie z niedziałaniem.</p></div>
+              <div class="tile"><img src="assets/icons/risks.svg" alt=""><h3>Skutki</h3><p>konsekwencje krótko- i długoterminowe, także uboczne i niezamierzone.</p></div>
+              <div class="tile"><img src="assets/icons/perspectives.svg" alt=""><h3>Perspektywy innych</h3><p>jak propozycję odbierze zespół, zarząd, klient czy inwestor.</p></div>
+              <div class="tile"><img src="assets/icons/link.svg" alt=""><h3>Spójność</h3><p>czy wnioski wynikają z danych, a całość ma uzasadnione fundamenty.</p></div>
+            </div>
+          </div>
 
-        function showAccessSection() {
-            document.getElementById('welcome-section').style.display = 'none';
-            document.getElementById('access-section').style.display = 'block';
+          <div class="m-stack">
+            <h3 class="m-h2">Kiedy sięgnąć po sparing</h3>
+            <p class="m-lead">Najlepiej, gdy masz już pomysł, plan lub wstępną analizę i chcesz ją rzetelnie sprawdzić, zanim pójdzie w świat.</p>
+            <div class="tiles tiles--2">
+              <div class="tile"><h3>Decyzja z wysokim ryzykiem</h3><p>scenariusze „co może pójść nie tak”, ich prawdopodobieństwo, skutki i zabezpieczenia (w duchu FMEA).</p></div>
+              <div class="tile"><h3>Wymagania i zakres projektu lub wdrożenia</h3><p>czy są kompletne, spójne, weryfikowalne i uwzględniają interesariuszy oraz ograniczenia techniczne.</p></div>
+              <div class="tile"><h3>Plan, harmonogram, budżet</h3><p>czy założenia są realistyczne i co leży na ścieżce krytycznej.</p></div>
+              <div class="tile"><h3>Zmiany organizacyjne</h3><p>reorganizacja, nowe procesy i zasady pracy, podział odpowiedzialności, alokacja ludzi.</p></div>
+              <div class="tile"><h3>Wybór dostawcy lub negocjacja umowy</h3><p>czy kryteria są właściwe i czy umowa chroni to, co najważniejsze.</p></div>
+              <div class="tile"><h3>Coś „nie gra”</h3><p>poczucie, że czegoś brakuje w analizie, ale nie wiadomo czego.</p></div>
+            </div>
+          </div>
 
-            // TELEPORTACJA JĘZYKA: Przeniesienie elementu PL|EN do paska nawigacji
-            const langSwitcher = document.getElementById('lang-switcher');
-            const navLinks = document.getElementById('nav-links');
-            if (langSwitcher && navLinks) {
-                navLinks.appendChild(langSwitcher);
-            }
-        }
+          <div class="m-next">
+            <p class="m-text m-small">Często wystarcza jedna rozmowa; można też umawiać się regularnie przy kolejnych tematach.</p>
+            <a class="btn" href="mailto:secondthought.msa@gmail.com?subject=Thinking%20Partner%20%E2%80%94%20rozmowa%20wst%C4%99pna">Umów bezpłatną rozmowę wstępną</a>
+          </div>
+        </div>
+      </div>
+    </div>
 
-        function showWelcomeSection() {
-            document.getElementById('welcome-section').style.display = 'flex';
-            document.getElementById('access-section').style.display = 'none';
-            localStorage.removeItem('access_token');
-            localStorage.removeItem('token_expires_at');
+    <!-- =====================================================
+         POP-UP: Basics of Coexistence
+         ===================================================== -->
+    <div class="modal" id="modal-basics" role="dialog" aria-modal="true" aria-labelledby="modal-basics-title">
+      <div class="modal__window">
+        <div class="modal__header">
+          <div class="brand">
+            <span class="brand__name">Second Thought</span>
+            <span class="brand__mark" aria-hidden="true"><span></span><span></span></span>
+          </div>
+          <div class="modal__controls">
+            <button type="button" data-modal-close aria-label="Zwiń okno"><img src="assets/icons/collapse.svg" alt=""></button>
+            <button type="button" data-modal-close aria-label="Zamknij"><img src="assets/icons/close.svg" alt=""></button>
+          </div>
+        </div>
+        <div class="modal__body">
+          <div class="m-intro">
+            <span class="m-status">W przygotowaniu</span>
+            <h2 class="m-title" id="modal-basics-title">Basics of Coexistence</h2>
+            <p class="m-subtitle">Manual dla zespołów, które chcą działać dobrze od pierwszego dnia</p>
+            <p class="m-lead">Gotowy zestaw podstawowych zasad, zachowań i wartości, na których można zbudować kulturę nowej firmy, startupu lub zespołu. Nie teoria zarządzania, tylko konkret: co robić, jak i dlaczego to ma znaczenie.</p>
+          </div>
 
-            // ODWRÓCENIE TELEPORTACJI: Język wraca do standardowego nagłówka .header
-            const langSwitcher = document.getElementById('lang-switcher');
-            const originalHeader = document.querySelector('.header');
-            if (langSwitcher && originalHeader) {
-                originalHeader.appendChild(langSwitcher);
-            }
-        }
+          <div class="two-cols">
+            <div>
+              <h3 class="m-h2">Dlaczego podstawy</h3>
+              <p class="m-text">Większość problemów w zespołach nie wynika z braku zaawansowanych narzędzi, tylko z zapominania o rzeczach najprostszych: jasnym mówieniu, czego się oczekuje, dotrzymywaniu słowa, informowaniu o opóźnieniach, ustaleniu, kto o czym decyduje. Osobno wyglądają niewinnie — razem prowadzą do chaosu i niedowiezionych projektów.</p>
+            </div>
+            <div>
+              <h3 class="m-h2">Dlaczego od początku</h3>
+              <p class="m-text">Kultura zespołu powstaje zawsze — świadomie albo przypadkiem. Nawyki kształtują się najszybciej w pierwszych tygodniach, a zmiana utrwalonych wzorców po roku czy dwóch kosztuje wielokrotnie więcej: czasu, pieniędzy i często dobrych ludzi.</p>
+            </div>
+          </div>
 
-        async function validateCode(code) {
-            const messageEl = document.getElementById('code-message');
-            const submitBtn = document.getElementById('submit-btn');
-            const inputEl = document.getElementById('code-input');
+          <div class="manual">
+            <h3 class="m-h2">Co znajdzie się w manualu</h3>
+            <div class="manual__items">
+              <div class="manual__item"><img src="assets/icons/layout-dashboard.svg" alt=""><h3>Infografika</h3><p>cały model na jednej stronie: do powieszenia w biurze, do onboardingu, do wysłania zespołowi.</p></div>
+              <div class="manual__item"><img src="assets/icons/book-open.svg" alt=""><h3>Opis szczegółowy</h3><p>każdy fundament i zachowanie: co oznacza w praktyce, dlaczego ma znaczenie i co się dzieje, gdy go brakuje.</p></div>
+              <div class="manual__item"><img src="assets/icons/network.svg" alt=""><h3>Obraz całości</h3><p>jak elementy się łączą: bez zaufania nie ma zdrowego konfliktu, bez konfliktu zaangażowania, bez zaangażowania odpowiedzialności, a bez niej wyniki zależą od przypadku.</p></div>
+            </div>
+          </div>
 
-            messageEl.innerHTML = '';
-            submitBtn.disabled = true;
-            inputEl.disabled = true;
+          <div class="m-stack">
+            <ol class="chain" aria-label="Od zaufania do wyników">
+              <li><span>Zaufanie</span><img src="assets/icons/arrow-right.svg" alt=""></li>
+              <li><span>Zdrowy konflikt</span><img src="assets/icons/arrow-right.svg" alt=""></li>
+              <li><span>Zaangażowanie</span><img src="assets/icons/arrow-right.svg" alt=""></li>
+              <li><span>Odpowiedzialność</span><img src="assets/icons/arrow-right.svg" alt=""></li>
+              <li><span>Wyniki</span></li>
+            </ol>
+            <p class="m-text m-text--muted m-small">Manual powstaje na bazie doświadczeń z międzynarodowych projektów, firmy technologicznej i wdrożeń IT, a także czerpie z teorii psychologicznych i podstaw neurobiologicznych.</p>
+            <p class="m-text">Po premierze manual będzie można stosować samodzielnie lub jako punkt wyjścia do Sparringu menedżerskiego.</p>
+          </div>
 
-            try {
-                const response = await fetch('/.netlify/functions/validate-code', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ code: code.toUpperCase() })
-                });
+          <!-- Formularz celowo nieaktywny (wersja podglądowa) -->
+          <form class="signup" id="signup-form" novalidate>
+            <div class="signup__field">
+              <label for="signup-email">E-mail</label>
+              <input id="signup-email" type="email" name="email" placeholder="Twój adres e-mail" autocomplete="email">
+            </div>
+            <button class="btn" type="submit">Zostaw kontakt i dowiedz się o premierze jako pierwszy</button>
+            <p class="signup__msg" id="signup-msg" role="status" hidden>Zapisy wystartują wkrótce — formularz nie jest jeszcze aktywny.</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 
-                const data = await response.json();
-
-                if (data.valid) {
-                    messageEl.innerHTML = '<span class="success-message">✓ Kod poprawny! Ładuję treść...</span>';
-                    
-                    localStorage.setItem('access_token', data.token);
-                    localStorage.setItem('token_expires_at', data.expiresAt);
-
-                    setTimeout(() => {
-                        showAccessSection();
-                    }, 1500);
-                } else {
-                    messageEl.innerHTML = `<span class="error-message">✗ ${data.message || 'Błąd podczas sprawdzania kodu.'}</span>`;
-                    submitBtn.disabled = false;
-                    inputEl.disabled = false;
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                messageEl.innerHTML = '<span class="error-message">✗ Błąd serwera. Spróbuj ponownie.</span>';
-                submitBtn.disabled = false;
-                inputEl.disabled = false;
-            }
-        }
-
-        // ===== EVENT LISTENERS =====
-        document.getElementById('submit-btn').addEventListener('click', (e) => {
-            e.preventDefault();
-            const code = document.getElementById('code-input').value.trim();
-            
-            if (!code) {
-                document.getElementById('code-message').innerHTML = '<span class="error-message">Wpisz proszę kod dostępu.</span>';
-                return;
-            }
-
-            if (code.length !== 8) {
-                document.getElementById('code-message').innerHTML = '<span class="error-message">Kod musi mieć 8 znaków.</span>';
-                return;
-            }
-
-            validateCode(code);
-        });
-
-        // POPRAWKA: Zabezpieczenie przed błędem, gdy przycisk wylogowania nie istnieje w DOM
-        const logoutBtn = document.getElementById('logout-btn');
-        if (logoutBtn) {
-            logoutBtn.addEventListener('click', () => {
-                showWelcomeSection();
-                document.getElementById('code-input').value = '';
-            });
-        }
-
-        window.addEventListener('load', () => {
-            if (isTokenValid()) {
-                showAccessSection();
-            } else {
-                showWelcomeSection();
-            }
-        });
-
-   // ===== ACCORDION FUNCTIONALITY =====
-document.querySelectorAll('.accordion-header').forEach(button => {
-    button.addEventListener('click', () => {
-        const isExpanded = button.getAttribute('aria-expanded') === 'true';
-        button.setAttribute('aria-expanded', !isExpanded);
-        
-        const content = button.nextElementSibling;
-    });
-});
-
-        // ===== TABS FUNCTIONALITY =====
-        document.addEventListener('DOMContentLoaded', () => {
-            const tabButtons = document.querySelectorAll('.tab-button');
-            
-            tabButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const tabId = button.getAttribute('data-tab');
-                    
-                    // Remove active class from all buttons and panels
-                    document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-                    document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
-                    
-                    // Add active class to clicked button and corresponding panel
-                    button.classList.add('active');
-                    document.getElementById(tabId).classList.add('active');
-                });
-            });
-        });
-
-        // ===== BURGER MENU & NAVIGATION =====
-        document.addEventListener('DOMContentLoaded', () => {
-            const burgerBtn = document.getElementById('burger-btn');
-            const navLinks = document.getElementById('nav-links');
-
-            if (burgerBtn && navLinks) {
-                // Otwieranie / zamykanie menu po kliknięciu na burger
-                burgerBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    navLinks.classList.toggle('active');
-                });
-
-                // Zamykanie menu po kliknięciu w dowolny element wewnątrz (linki oraz język)
-                navLinks.addEventListener('click', (e) => {
-                    if (e.target.tagName === 'A' || e.target.id === 'lang-switcher') {
-                        navLinks.classList.remove('active');
-                    }
-                });
-                
-                // Zamykanie kliknięciem w przestrzeń poza nawigacją
-                document.addEventListener('click', () => {
-                    navLinks.classList.remove('active');
-                });
-            }
-        });
-    </script>
+  <script src="assets/js/main.js"></script>
 </body>
 </html>
